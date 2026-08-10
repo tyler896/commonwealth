@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+/* Podium Soft — drop licensed .woff2 files into /public/fonts/ */
+@font-face {
+  font-family: "Podium Soft";
+  src:
+    local("Podium Soft"),
+    local("PodiumSoft-Regular"),
+    url("/fonts/PodiumSoft-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Podium Soft";
+  src:
+    local("Podium Soft Medium"),
+    local("PodiumSoft-Medium"),
+    url("/fonts/PodiumSoft-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Podium Soft";
+  src:
+    local("Podium Soft SemiBold"),
+    local("Podium Soft DemiBold"),
+    local("PodiumSoft-SemiBold"),
+    url("/fonts/PodiumSoft-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Podium Soft";
+  src:
+    local("Podium Soft Bold"),
+    local("PodiumSoft-Bold"),
+    url("/fonts/PodiumSoft-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Podium Soft";
+  src:
+    local("Podium Soft Black"),
+    local("Podium Soft Heavy"),
+    local("PodiumSoft-Black"),
+    url("/fonts/PodiumSoft-Black.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-ink: #121212;
+  --color-ink-soft: #1c1c1c;
+  --color-paper: #ffffff;
+  --color-paper-soft: #f6f4fa;
+  --color-paper-muted: #ebe7f2;
+  --color-leaf: #288848;
+  --color-leaf-deep: #1f6b38;
+  --color-leaf-bright: #34a057;
+  --color-brand-red: #d91212;
+  --color-brand-red-deep: #b40e0e;
+  --color-brand-blue: #0c8ae3;
+  --color-brand-blue-deep: #0869ad;
+  --color-brand-blue-soft: #e8f4fc;
+  --color-brand-blue-line: rgba(12, 138, 227, 0.28);
+  --color-raven: #5b4a8a;
+  --color-raven-deep: #3a2d63;
+  --color-raven-soft: #8b7bb8;
+  --color-cream: #121212;
+  --color-gold: #d4a017;
+  --color-gold-deep: #c47a12;
+  --color-muted: #5f5a6b;
+  --color-line: rgba(58, 45, 99, 0.14);
+  --color-purple: #5b4a8a;
+  --color-purple-deep: #3a2d63;
+  --color-purple-line: rgba(91, 74, 138, 0.28);
+
+  --font-display: "Podium Soft", "Arial Rounded MT Bold", "Arial", sans-serif;
+  --font-body: "Podium Soft", "Arial Rounded MT Bold", "Arial", sans-serif;
+  --font-blackletter: "Podium Soft", "Arial Rounded MT Bold", "Arial", sans-serif;
+
+  --animate-rise: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade: fade 1s ease both;
+  --animate-drift: drift 14s ease-in-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background:
+    radial-gradient(ellipse 70% 45% at 90% -5%, rgba(91, 74, 138, 0.16), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 0% 100%, rgba(40, 136, 72, 0.1), transparent 50%),
+    var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-raven) 30%, transparent);
+  color: var(--color-ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.gold-text,
+.leaf-text {
+  color: var(--color-leaf);
+}
+
+.font-blackletter {
+  font-family: var(--font-blackletter);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.noise {
+  position: relative;
+}
+
+.noise::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  z-index: 0;
+}
+
+.section-pad {
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+.product-carousel {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.product-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  body {
+    background:
+      radial-gradient(ellipse 80% 40% at 100% 0%, rgba(91, 74, 138, 0.1), transparent 55%),
+      var(--color-paper);
+  }
+}
+
+.reveal {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.reveal-delay-1 {
+  animation-delay: 0.12s;
+}
+
+.reveal-delay-2 {
+  animation-delay: 0.24s;
+}
+
+.reveal-delay-3 {
+  animation-delay: 0.36s;
+}

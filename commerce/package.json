@@ -1,0 +1,24 @@
+{
+  "name": "commerce",
+  "private": true,
+  "scripts": {
+    "dev": "spree dev",
+    "stop": "spree stop",
+    "down": "docker compose down",
+    "update": "spree update",
+    "eject": "spree eject",
+    "logs": "spree logs",
+    "logs:worker": "spree logs worker",
+    "seed": "spree seed",
+    "seed:commonwealth": "docker compose cp scripts/seed_commonwealth.rb web:/rails/tmp/seed_commonwealth.rb && docker compose exec -T web bin/rails runner /rails/tmp/seed_commonwealth.rb",
+    "load-sample-data": "spree sample-data",
+    "console": "spree console",
+    "api": "spree api",
+    "auth": "spree auth",
+    "api-key": "spree api-key"
+  },
+  "dependencies": {
+    "@spree/cli": "^2.4.4",
+    "@spree/docs": "latest"
+  }
+}
