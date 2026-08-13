@@ -2,6 +2,24 @@
 
 Custom branded storefront + commerce API.
 
+**Repo:** https://github.com/tyler896/commonwealth (`main` is current)
+
+## For developers
+
+Everything needed to run and ship this lives in this repo:
+
+| Path | What it is |
+| --- | --- |
+| `/` | Vite storefront (lander + shop) |
+| `/commerce` | Commerce API + **admin** (Docker / Rails) |
+| `/commerce/scripts` | Catalog seed (`seed:commonwealth`) |
+| `.env.example` | Storefront env template |
+
+- **Local admin:** `http://localhost:3001/admin` after `npm run commerce:dev` (or `cd commerce && npm run dev`)
+- **Lander preview unlock password:** `Ciggos123!` (or `VITE_STOREFRONT_UNLOCKED=true`)
+- **Secrets:** `.env` files are gitignored — copy from `.env.example` / `commerce/backend/.env.example`
+- **Production hosting** for the commerce API + `/admin` is not configured here; deploy `/commerce` wherever you prefer (Docker image builds from `commerce/backend/Dockerfile` with context `commerce/`)
+
 ## Public mode (default)
 
 By default the app serves only the drop-alert lander (cloned from the live site).
