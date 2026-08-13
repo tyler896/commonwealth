@@ -37,16 +37,6 @@ Store API: http://localhost:3001/api/v3/store
 
 Publishable key goes in the root `.env` as `VITE_COMMERCE_PUBLISHABLE_KEY`.
 
-## Deploy admin (Render)
-
-The commerce API + `/admin` are **not** on the Vite storefront. Deploy them with the root `render.yaml` Blueprint:
-
-1. Open [Render → New → Blueprint](https://dashboard.render.com/blueprints/new)
-2. Connect `tyler896/commonwealth` and deploy
-3. Admin URL: `https://<service-name>.onrender.com/admin`
-
-Default admin login comes from first-boot seed (change it after login). Free web services sleep after idle; first request can take ~1 minute.
-
 ## Seed Commonwealth products
 
 ```bash
