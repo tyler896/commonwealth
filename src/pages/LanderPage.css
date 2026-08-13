@@ -1,0 +1,176 @@
+.cw-lander {
+  --dead-blue: #2a8a4a;
+  --dead-blue-deep: #0f3a1f;
+  --cream: #f4ecd8;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  color: var(--cream);
+  background: var(--dead-blue);
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.cw-lander__content {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 6vw;
+}
+
+.cw-lander__side {
+  width: auto;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 50vw;
+  object-fit: contain;
+  display: block;
+}
+
+.cw-lander__logo {
+  width: min(560px, 88vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+.cw-lander__signup {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.cw-lander__signup-label {
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.cw-lander__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.cw-lander__form input[type='email'] {
+  width: 100%;
+  max-width: 320px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(244, 236, 216, 0.4);
+  outline: 0;
+  color: var(--cream);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.2rem;
+  font-family: inherit;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.cw-lander__form input[type='email']::placeholder {
+  color: rgba(244, 236, 216, 0.45);
+}
+
+.cw-lander__form input[type='email']:focus {
+  border-color: var(--cream);
+}
+
+.cw-lander__form button {
+  background: transparent;
+  color: var(--cream);
+  border: 1px solid rgba(244, 236, 216, 0.5);
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cw-lander__form button:hover:not(:disabled) {
+  background: var(--cream);
+  color: var(--dead-blue-deep);
+  border-color: var(--cream);
+}
+
+.cw-lander__form button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.cw-lander__success {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.cw-lander__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ffd0d0;
+}
+
+.cw-lander__footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 701px) and (max-width: 1024px) {
+  .cw-lander {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cw-lander__content {
+    min-height: 70vh;
+    padding: 5vh 7vw 4rem;
+  }
+
+  .cw-lander__side {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 700px) {
+  .cw-lander {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cw-lander__content {
+    min-height: auto;
+    padding: 4vh 6vw 3rem;
+  }
+
+  .cw-lander__side {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cw-lander__form button {
+    width: 100%;
+    max-width: 320px;
+  }
+}

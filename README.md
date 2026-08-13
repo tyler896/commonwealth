@@ -2,6 +2,15 @@
 
 Custom branded storefront + commerce API.
 
+## Public mode (default)
+
+By default the app serves only the drop-alert lander (cloned from the live site).
+The full shop stays locked until you set:
+
+```bash
+VITE_STOREFRONT_UNLOCKED=true
+```
+
 ## Stack
 
 - **Storefront:** Vite + React + TypeScript + Tailwind (`/`)
