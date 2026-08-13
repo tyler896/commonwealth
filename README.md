@@ -5,11 +5,10 @@ Custom branded storefront + commerce API.
 ## Public mode (default)
 
 By default the app serves only the drop-alert lander (cloned from the live site).
-The full shop stays locked until you set:
+The full shop stays locked until you either:
 
-```bash
-VITE_STOREFRONT_UNLOCKED=true
-```
+- click **Preview site** on the lander and enter the preview password, or
+- set `VITE_STOREFRONT_UNLOCKED=true`
 
 ## Stack
 

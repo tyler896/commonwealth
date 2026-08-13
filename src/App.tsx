@@ -1,7 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { CartProvider } from './cart/CartContext'
 import { Layout } from './components/Layout'
-import { STOREFRONT_UNLOCKED } from './config'
+import {
+  STOREFRONT_ENV_UNLOCKED,
+  isPreviewUnlocked,
+} from './config'
 import { LanderPage } from './pages/LanderPage'
 import { ShopPage } from './pages/ShopPage'
 import { ProductPage } from './pages/ProductPage'
@@ -9,7 +13,21 @@ import { CollectionPage } from './pages/CollectionPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 
 export default function App() {
-  if (!STOREFRONT_UNLOCKED) {
+  const [unlocked, setUnlocked] = useState(
+    () => STOREFRONT_ENV_UNLOCKED || isPreviewUnlocked(),
+  )
+
+  useEffect(() => {
+    const sync = () => setUnlocked(STOREFRONT_ENV_UNLOCKED || isPreviewUnlocked())
+    window.addEventListener('cw-preview-unlock', sync)
+    window.addEventListener('storage', sync)
+    return () => {
+      window.removeEventListener('cw-preview-unlock', sync)
+      window.removeEventListener('storage', sync)
+    }
+  }, [])
+
+  if (!unlocked) {
     return (
       <BrowserRouter>
         <Routes>

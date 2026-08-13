@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { PREVIEW_PASSWORD, unlockPreview } from '../config'
 import './LanderPage.css'
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/owttttrlhd2b8aj898d5gf9qaha59xe1'
@@ -6,6 +7,9 @@ const WEBHOOK_URL = 'https://hook.us2.make.com/owttttrlhd2b8aj898d5gf9qaha59xe1'
 export function LanderPage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'submitting' | 'ok' | 'error'>('idle')
+  const [showPreview, setShowPreview] = useState(false)
+  const [password, setPassword] = useState('')
+  const [previewError, setPreviewError] = useState(false)
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -28,6 +32,15 @@ export function LanderPage() {
     } catch {
       setStatus('error')
     }
+  }
+
+  const onPreviewSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (password === PREVIEW_PASSWORD) {
+      unlockPreview()
+      return
+    }
+    setPreviewError(true)
   }
 
   return (
@@ -67,7 +80,39 @@ export function LanderPage() {
           )}
         </div>
 
-        <div className="cw-lander__footer">&copy; Common Wealth Seed Co.</div>
+        <div className="cw-lander__footer">
+          <span>&copy; Common Wealth Seed Co.</span>
+          <button
+            type="button"
+            className="cw-lander__preview-toggle"
+            onClick={() => {
+              setShowPreview((v) => !v)
+              setPreviewError(false)
+              setPassword('')
+            }}
+          >
+            Preview site
+          </button>
+        </div>
+
+        {showPreview && (
+          <form className="cw-lander__preview" onSubmit={onPreviewSubmit}>
+            <input
+              type="password"
+              name="preview-password"
+              placeholder="Password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value)
+                setPreviewError(false)
+              }}
+              required
+            />
+            <button type="submit">Enter</button>
+            {previewError && <p className="cw-lander__error">Incorrect password.</p>}
+          </form>
+        )}
       </section>
 
       <img
