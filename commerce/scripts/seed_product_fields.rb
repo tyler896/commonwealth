@@ -12,7 +12,10 @@ defs = [
   { key: 'lineage', name: 'Lineage', type: 'Spree::Metafields::LongText' },
   { key: 'line', name: 'Line', type: 'Spree::Metafields::ShortText' },
   { key: 'pack', name: 'Pack', type: 'Spree::Metafields::ShortText' },
-  { key: 'brand', name: 'Brand', type: 'Spree::Metafields::ShortText' }
+  { key: 'brand', name: 'Brand', type: 'Spree::Metafields::ShortText' },
+  { key: 'flowering_time', name: 'Flowering time', type: 'Spree::Metafields::ShortText' },
+  { key: 'yield', name: 'Yield', type: 'Spree::Metafields::ShortText' },
+  { key: 'effects', name: 'Effects', type: 'Spree::Metafields::LongText' }
 ]
 
 created = 0

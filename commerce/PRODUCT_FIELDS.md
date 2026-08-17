@@ -13,12 +13,15 @@ After you save a definition, every product edit form shows that field. Fill valu
 
 ### Seeded defaults (already on live)
 
-| Label   | Key (`properties.*`) | Example |
-|---------|----------------------|---------|
-| Lineage | `lineage`            | `(Zkittlez × Kush Mints) × (Secret Lemon × Tallymon #3) #2` |
-| Line    | `line`               | `Grape Sunshine` |
-| Pack    | `pack`               | `3-pack feminized` |
-| Brand   | `brand`              | `Commonwealth Seed Co` |
+| Label          | Key (`properties.*`) | Example |
+|----------------|----------------------|---------|
+| Lineage        | `lineage`            | `(Zkittlez × Kush Mints) × (Secret Lemon × Tallymon #3) #2` |
+| Line           | `line`               | `Grape Sunshine` |
+| Pack           | `pack`               | `3-pack feminized` |
+| Brand          | `brand`              | `Commonwealth Seed Co` |
+| Flowering time | `flowering_time`     | *(fill per product)* |
+| Yield          | `yield`              | *(fill per product)* |
+| Effects        | `effects`            | *(fill per product)* |
 
 Re-run locally / on server:
 
