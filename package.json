@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=commonwealthseedco",
     "commerce:dev": "npm --prefix commerce run dev",
     "commerce:stop": "npm --prefix commerce run stop",
     "commerce:seed": "npm --prefix commerce run seed:commonwealth"
