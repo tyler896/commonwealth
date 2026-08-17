@@ -33,7 +33,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LanderPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          {/* Keep /admin reachable while the lander lock is on */}
+          <Route path="/admin/*" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
@@ -44,7 +45,7 @@ export default function App() {
     <BrowserRouter>
       <CartProvider>
         <Routes>
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/*" element={<AdminPage />} />
           <Route element={<Layout />}>
             <Route index element={<Navigate to="/shop" replace />} />
             <Route path="shop" element={<ShopPage />} />
