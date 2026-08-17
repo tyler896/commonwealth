@@ -9,13 +9,13 @@
 #   docker compose -f docker-compose.prod.yml exec web bin/rails runner /tmp/seed_product_fields.rb
 
 defs = [
-  { key: 'lineage', name: 'Lineage', type: 'Spree::Metafields::LongText' },
-  { key: 'line', name: 'Line', type: 'Spree::Metafields::ShortText' },
-  { key: 'pack', name: 'Pack', type: 'Spree::Metafields::ShortText' },
-  { key: 'brand', name: 'Brand', type: 'Spree::Metafields::ShortText' },
-  { key: 'flowering_time', name: 'Flowering time', type: 'Spree::Metafields::ShortText' },
-  { key: 'yield', name: 'Yield', type: 'Spree::Metafields::ShortText' },
-  { key: 'effects', name: 'Effects', type: 'Spree::Metafields::LongText' }
+  { key: 'lineage', name: 'Lineage', type: 'Spree::Metafields::LongText', icon: 'dna' },
+  { key: 'line', name: 'Line', type: 'Spree::Metafields::ShortText', icon: 'leaf' },
+  { key: 'pack', name: 'Pack', type: 'Spree::Metafields::ShortText', icon: 'package' },
+  { key: 'brand', name: 'Brand', type: 'Spree::Metafields::ShortText', icon: 'badge' },
+  { key: 'flowering_time', name: 'Flowering time', type: 'Spree::Metafields::ShortText', icon: 'clock' },
+  { key: 'yield', name: 'Yield', type: 'Spree::Metafields::ShortText', icon: 'sprout' },
+  { key: 'effects', name: 'Effects', type: 'Spree::Metafields::LongText', icon: 'sparkles' }
 ]
 
 created = 0
@@ -30,7 +30,8 @@ defs.each do |attrs|
     metafield_type: attrs[:type],
     display_on: 'both',
     searchable: attrs[:key] != 'brand',
-    sortable: false
+    sortable: false,
+    icon: attrs[:icon]
   )
   if definition.new_record? || definition.changed?
     definition.save!

@@ -56,6 +56,8 @@ services:
     volumes:
       - storage_data:/rails/storage
       - ./config/initializers/session_store_override.rb:/rails/config/initializers/session_store_override.rb:ro
+      - ./config/initializers/metafield_icons.rb:/rails/config/initializers/metafield_icons.rb:ro
+      - ./app/views/spree/admin/metafield_definitions/_form.html.erb:/rails/app/views/spree/admin/metafield_definitions/_form.html.erb:ro
     healthcheck:
       test: curl -f http://localhost:3000/up || exit 1
       interval: 10s

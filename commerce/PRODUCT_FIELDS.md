@@ -37,8 +37,15 @@ cd commerce && npm run seed:product-fields
 
 ## Storefront / Google
 
-- API: products are fetched with `expand=custom_fields`
-- PDP includes JSON-LD (`Product` + `additionalProperty`) for Google — no visual change yet
-- Visual placement on product pages comes later; data is already on `product.attributes`
+- API: products are fetched with `expand=custom_fields` (includes optional `icon`)
+- PDP shows filled metafields in a 2-column grid with icons (empty values hidden)
+- JSON-LD (`Product` + `additionalProperty`) for Google
+
+### Icons
+
+On **Settings → Metafields → edit a definition**, set **Storefront icon** to one of:
+`dna`, `leaf`, `package`, `badge`, `clock`, `sprout`, `sparkles`, `tag`, `flask`, `sun`.
+
+Defaults are seeded for the Commonwealth fields above.
 
 Do not put these only in free-form description text going forward — use the metafields so Google and the shop share one source of truth.

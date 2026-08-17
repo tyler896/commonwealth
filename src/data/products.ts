@@ -10,6 +10,7 @@ export type CommerceCustomField = {
   key?: string
   field_type?: string
   value?: string | number | boolean | null
+  icon?: string | null
 }
 
 export type CommerceProduct = {
@@ -34,6 +35,7 @@ export type ProductAttribute = {
   key: string
   label: string
   value: string
+  icon?: string
 }
 
 export type Product = {
@@ -165,6 +167,7 @@ function buildAttributes(
       key: f.key!.includes('.') ? f.key!.split('.').pop()! : f.key!,
       label: f.label || f.key!,
       value: String(f.value),
+      icon: f.icon?.trim() || undefined,
     }))
 
   if (fromApi.length) {
@@ -179,14 +182,15 @@ function buildAttributes(
 
   // Fallback when API has no custom_fields expand
   return [
-    { key: 'lineage', label: 'Lineage', value: lineage },
+    { key: 'lineage', label: 'Lineage', value: lineage, icon: 'dna' },
     {
       key: 'line',
       label: 'Line',
       value: line === 'grape-sunshine' ? 'Grape Sunshine' : 'Wild Thornberry',
+      icon: 'leaf',
     },
-    { key: 'pack', label: 'Pack', value: `${packSize} feminized` },
-    { key: 'brand', label: 'Brand', value: brand },
+    { key: 'pack', label: 'Pack', value: `${packSize} feminized`, icon: 'package' },
+    { key: 'brand', label: 'Brand', value: brand, icon: 'badge' },
   ].filter((a) => a.value.trim())
 }
 

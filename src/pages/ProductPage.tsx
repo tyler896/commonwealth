@@ -4,6 +4,7 @@ import { getCollection, type Product } from '../data/products'
 import { fetchProductBySlug, fetchProducts } from '../api/commerce'
 import { ProductCarousel } from '../components/ProductCarousel'
 import { ProductJsonLd } from '../components/ProductJsonLd'
+import { MetafieldIcon } from '../components/MetafieldIcon'
 
 export function ProductPage() {
   const { id } = useParams()
@@ -133,13 +134,25 @@ export function ProductPage() {
           </div>
 
           {metafields.length > 0 && (
-            <ul className="mt-8 space-y-2 text-sm text-muted md:mt-10 md:space-y-3">
+            <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 md:mt-10 md:gap-x-8 md:gap-y-5">
               {metafields.map((a) => (
-                <li key={a.key}>
-                  — {a.label}: {a.value}
-                </li>
+                <div key={a.key} className="flex min-w-0 items-start gap-2.5">
+                  <MetafieldIcon
+                    name={a.icon}
+                    fieldKey={a.key}
+                    className={`mt-0.5 h-4 w-4 shrink-0 ${
+                      isRed ? 'text-brand-red' : 'text-brand-blue'
+                    }`}
+                  />
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">
+                      {a.label}
+                    </p>
+                    <p className="mt-0.5 text-sm leading-snug text-ink">{a.value}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
       </div>
