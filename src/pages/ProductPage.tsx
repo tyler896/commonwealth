@@ -64,6 +64,7 @@ export function ProductPage() {
 
   const collection = getCollection(product.line)
   const isRed = collection?.accent === 'red'
+  const metafields = product.attributes.filter((a) => a.value.trim())
 
   return (
     <div className="section-pad mx-auto max-w-7xl pb-16 pt-24 md:pb-24 md:pt-36">
@@ -131,11 +132,15 @@ export function ProductPage() {
             </span>
           </div>
 
-          <ul className="mt-8 space-y-2 text-sm text-muted md:mt-10 md:space-y-3">
-            <li>— Commonwealth Seed Co genetics only</li>
-            <li>— {collection?.name} · Feminized</li>
-            <li>— Packs of {product.packSize}</li>
-          </ul>
+          {metafields.length > 0 && (
+            <ul className="mt-8 space-y-2 text-sm text-muted md:mt-10 md:space-y-3">
+              {metafields.map((a) => (
+                <li key={a.key}>
+                  — {a.label}: {a.value}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 

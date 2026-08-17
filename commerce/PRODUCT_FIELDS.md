@@ -9,7 +9,13 @@ Store-wide product attributes are defined once, then editable on every product.
 3. Resource: **Product**
 4. Add a field (example: namespace `properties`, key `thc_range`, label `THC range`, type Short/Long text, visibility **both** so the storefront API can read it)
 
-After you save a definition, every product edit form shows that field. Fill values per product.
+After you save a definition, enter values per product:
+
+1. **Products** → open a product
+2. Top-right **⋯** (three-dot) menu → **Metafields**
+3. Fill Lineage / Line / Pack / Brand / Flowering time / Yield / Effects → **Save**
+
+(They are not inline on the main product edit form.)
 
 ### Seeded defaults (already on live)
 
