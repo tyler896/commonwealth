@@ -7,6 +7,7 @@ import {
   isPreviewUnlocked,
 } from './config'
 import { AdminPage } from './pages/AdminPage'
+import { SpreeAdminRedirect } from './pages/SpreeAdminRedirect'
 import { LanderPage } from './pages/LanderPage'
 import { ShopPage } from './pages/ShopPage'
 import { ProductPage } from './pages/ProductPage'
@@ -33,8 +34,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LanderPage />} />
-          {/* Keep /admin reachable while the lander lock is on */}
-          <Route path="/admin/*" element={<AdminPage />} />
+          {/* Catalog editor — not Spree (Spree owns /admin on production) */}
+          <Route path="/catalog-admin/*" element={<AdminPage />} />
+          {/* Hard-reload so nginx can proxy /admin to Spree */}
+          <Route path="/admin/*" element={<SpreeAdminRedirect />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
@@ -45,7 +48,8 @@ export default function App() {
     <BrowserRouter>
       <CartProvider>
         <Routes>
-          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/catalog-admin/*" element={<AdminPage />} />
+          <Route path="/admin/*" element={<SpreeAdminRedirect />} />
           <Route element={<Layout />}>
             <Route index element={<Navigate to="/shop" replace />} />
             <Route path="shop" element={<ShopPage />} />

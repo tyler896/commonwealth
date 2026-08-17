@@ -1,0 +1,10 @@
+# Isolated Commonwealth storefront (lander by default).
+# Project name: commonwealth — volumes/networks stay namespaced.
+name: commonwealth
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3023:80"

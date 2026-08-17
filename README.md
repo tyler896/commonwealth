@@ -4,23 +4,26 @@ Custom branded storefront + commerce API.
 
 **Repo:** https://github.com/tyler896/commonwealth (`main` is current)
 
+**Agents deploying to production:** follow [DEPLOY.md](./DEPLOY.md) (and [AGENTS.md](./AGENTS.md)).
+
 ## For developers
 
 Everything needed to run and ship this lives in this repo:
 
 | Path | What it is |
 | --- | --- |
-| `/` | Vite storefront (lander + shop + `/admin`) |
-| `/src/data/catalog.ts` | Built-in product catalog (shop works without hosted commerce) |
-| `/commerce` | Optional local commerce API (Docker / Rails) |
+| `/` | Vite storefront (lander + shop) |
+| `/src/data/catalog.ts` | Built-in product catalog (local shop can work without commerce) |
+| `/commerce` | Commerce API (Docker / Rails) — **live on production** |
 | `/commerce/scripts` | Catalog seed (`seed:commonwealth`) |
 | `.env.example` | Storefront env template |
 
-- **Site admin (no host deploy):** `https://commonwealthseedco.com/admin` or `/admin` locally — password `Ciggos123!`
-- **Optional full commerce admin:** `http://localhost:3001/admin` after `npm run commerce:dev` (`spree@example.com` / `spree123`)
-- **Lander preview unlock:** same password, or `VITE_STOREFRONT_UNLOCKED=true`
+- **Spree admin (live):** `https://commonwealthseedco.com/admin`
+- **Catalog editor (storefront SPA):** `/catalog-admin` (local or live)
+- **Optional local commerce admin:** `http://localhost:3001/admin` after `npm run commerce:dev`
+- **Lander preview unlock:** preview password on the lander, or `VITE_STOREFRONT_UNLOCKED=true`
 - **Secrets:** `.env` files are gitignored — copy from `.env.example` / `commerce/backend/.env.example`
-- The live storefront does **not** require a deployed commerce backend; `/commerce` stays local/optional
+- **Production host:** see [DEPLOY.md](./DEPLOY.md) — do not deploy to the old shared Spree box
 
 ## Public mode (default)
 

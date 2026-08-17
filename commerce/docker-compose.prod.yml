@@ -1,0 +1,68 @@
+name: commonwealth-commerce
+
+x-app: &app
+  image: ghcr.io/spree/spree:${SPREE_VERSION_TAG:-latest}
+  depends_on:
+    postgres:
+      condition: service_healthy
+    mailpit:
+      condition: service_started
+  env_file: .env
+  environment:
+    DATABASE_URL: postgres://postgres@postgres:5432/spree_production
+    SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    RAILS_FORCE_SSL: ${RAILS_FORCE_SSL:-false}
+    RAILS_ASSUME_SSL: ${RAILS_ASSUME_SSL:-true}
+    RAILS_HOST: ${RAILS_HOST:-commonwealthseedco.com}
+    SMTP_HOST: ${SMTP_HOST:-mailpit}
+    SMTP_PORT: ${SMTP_PORT:-1025}
+    SOLID_QUEUE_IN_PUMA: ${SOLID_QUEUE_IN_PUMA:-true}
+    WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
+    RAILS_MAX_THREADS: ${RAILS_MAX_THREADS:-5}
+    MISSION_CONTROL_USER: ${MISSION_CONTROL_USER:-jobs}
+    MISSION_CONTROL_PASSWORD: ${MISSION_CONTROL_PASSWORD}
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/18/docker
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:1025:1025"
+    environment:
+      MP_MAX_MESSAGES: "500"
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+
+  web:
+    <<: *app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3024:3000"
+    volumes:
+      - storage_data:/rails/storage
+      - ./config/initializers/session_store_override.rb:/rails/config/initializers/session_store_override.rb:ro
+    healthcheck:
+      test: curl -f http://localhost:3000/up || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 60s
+
+volumes:
+  postgres_data:
+  storage_data:

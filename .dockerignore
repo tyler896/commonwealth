@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.DS_Store
+.env
+.env.*
+!.env.example
+commerce/backend/tmp
+commerce/backend/log
+commerce/backend/storage
+*.log
