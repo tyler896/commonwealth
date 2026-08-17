@@ -10,15 +10,17 @@ Everything needed to run and ship this lives in this repo:
 
 | Path | What it is |
 | --- | --- |
-| `/` | Vite storefront (lander + shop) |
-| `/commerce` | Commerce API + **admin** (Docker / Rails) |
+| `/` | Vite storefront (lander + shop + `/admin`) |
+| `/src/data/catalog.ts` | Built-in product catalog (shop works without hosted commerce) |
+| `/commerce` | Optional local commerce API (Docker / Rails) |
 | `/commerce/scripts` | Catalog seed (`seed:commonwealth`) |
 | `.env.example` | Storefront env template |
 
-- **Local admin:** `http://localhost:3001/admin` after `npm run commerce:dev` (or `cd commerce && npm run dev`)
-- **Lander preview unlock password:** `Ciggos123!` (or `VITE_STOREFRONT_UNLOCKED=true`)
+- **Site admin (no host deploy):** `https://commonwealthseedco.com/admin` or `/admin` locally — password `Ciggos123!`
+- **Optional full commerce admin:** `http://localhost:3001/admin` after `npm run commerce:dev` (`spree@example.com` / `spree123`)
+- **Lander preview unlock:** same password, or `VITE_STOREFRONT_UNLOCKED=true`
 - **Secrets:** `.env` files are gitignored — copy from `.env.example` / `commerce/backend/.env.example`
-- **Production hosting** for the commerce API + `/admin` is not configured here; deploy `/commerce` wherever you prefer (Docker image builds from `commerce/backend/Dockerfile` with context `commerce/`)
+- The live storefront does **not** require a deployed commerce backend; `/commerce` stays local/optional
 
 ## Public mode (default)
 

@@ -6,6 +6,7 @@ import {
   STOREFRONT_ENV_UNLOCKED,
   isPreviewUnlocked,
 } from './config'
+import { AdminPage } from './pages/AdminPage'
 import { LanderPage } from './pages/LanderPage'
 import { ShopPage } from './pages/ShopPage'
 import { ProductPage } from './pages/ProductPage'
@@ -32,6 +33,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LanderPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
@@ -42,6 +44,7 @@ export default function App() {
     <BrowserRouter>
       <CartProvider>
         <Routes>
+          <Route path="/admin" element={<AdminPage />} />
           <Route element={<Layout />}>
             <Route index element={<Navigate to="/shop" replace />} />
             <Route path="shop" element={<ShopPage />} />

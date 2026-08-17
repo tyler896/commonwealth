@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss()],
     server: {
       proxy: {
+        // Optional local commerce API — shop falls back to static catalog if down
         '/api': {
           target: commerceTarget,
           changeOrigin: true,
