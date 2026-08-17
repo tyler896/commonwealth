@@ -1,9 +1,10 @@
 # Hosted behind Cloudflare + nginx TLS.
 # Mounted into the stock Spree image via docker-compose.prod.yml.
 suffix = ENV.fetch('COOKIE_SUFFIX', 'v4')
+SESSION_KEY = "_commonwealth_spree_session_#{suffix}"
 
 Rails.application.config.session_store :cookie_store,
-  key: "_commonwealth_spree_session_#{suffix}",
+  key: SESSION_KEY,
   same_site: :lax,
   secure: Rails.env.production?,
   httponly: true
@@ -24,20 +25,24 @@ Rails.application.config.middleware.insert_before(
 
     def initialize(app)
       @app = app
+      @session_key = SESSION_KEY
     end
 
     def call(env)
       path = env['PATH_INFO'].to_s
-      clear_login = path.start_with?('/admin_user/sign_in')
+      # Only scrub on GET login — never on POST or CSRF/session breaks.
+      scrub = env['REQUEST_METHOD'] == 'GET' && path.start_with?('/admin_user/sign_in')
 
-      if clear_login && env['HTTP_COOKIE'].present?
+      if scrub && env['HTTP_COOKIE'].present?
         keep = []
         env['HTTP_COOKIE'].split(/;\s*/).each do |part|
           name = part.split('=', 2).first.to_s
-          keep << part unless STALE.include?(name) || name.start_with?('_commonwealth_spree_session')
+          next if STALE.include?(name)
+          # Drop older session cookie names, keep the current one.
+          next if name.start_with?('_commonwealth_spree_session') && name != @session_key
+
+          keep << part
         end
-        # Drop all session + remember cookies on the login page so Devise can't
-        # treat the browser as already signed-in and 302 away into a loop.
         env['HTTP_COOKIE'] = keep.join('; ')
       end
 
@@ -47,12 +52,11 @@ Rails.application.config.middleware.insert_before(
         warn "[redir] #{status} #{env['REQUEST_METHOD']} #{path} -> #{headers['Location']} cookie=#{env['HTTP_COOKIE'].to_s[0, 240]}"
       end
 
-      if clear_login
+      if scrub
         expire = STALE.map do |name|
           "#{name}=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; HttpOnly; SameSite=Lax"
         end
-        existing = headers['Set-Cookie']
-        headers['Set-Cookie'] = Array(existing) + expire
+        headers['Set-Cookie'] = Array(headers['Set-Cookie']) + expire
       end
 
       [status, headers, body]
