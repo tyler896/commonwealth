@@ -77,7 +77,7 @@ export function Navbar() {
             onClick={openCart}
             className="relative rounded-full bg-brand-red px-5 py-2 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep"
           >
-            Bag
+            CART
             {count > 0 && (
               <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-white">
                 {count}
@@ -92,7 +92,7 @@ export function Navbar() {
             onClick={openCart}
             className="relative rounded-full bg-brand-red px-3.5 py-1.5 font-display text-[10px] tracking-[0.18em] uppercase text-white"
           >
-            Bag
+            CART
             {count > 0 && (
               <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[9px] font-bold text-white">
                 {count}
