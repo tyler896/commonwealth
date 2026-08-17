@@ -59,3 +59,20 @@ Rails.application.config.middleware.insert_before(
     end
   end
 )
+
+# Spree mounts Devise inside the engine with no admin_user_root / engine root.
+# Devise's signed_in_root_path then calls root_path on the sessions controller,
+# which resolves to the current path (/admin_user/sign_in) — so a successful
+# login 302s right back to the login form (looks like a page reload).
+Rails.application.config.to_prepare do
+  Spree::Admin::UserSessionsController.class_eval do
+    def after_sign_in_path_for(resource_or_scope)
+      stored = stored_location_for(resource_or_scope).to_s
+      if stored.blank? || stored.start_with?('/admin_user/sign_in')
+        spree.admin_path
+      else
+        stored
+      end
+    end
+  end
+end
