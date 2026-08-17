@@ -39,7 +39,9 @@ function withOverrides(products: Product[]): Product[] {
 
 export async function fetchProducts(): Promise<Product[]> {
   try {
-    const json = await commerceFetch<ListResponse>('/api/v3/store/products?limit=100')
+    const json = await commerceFetch<ListResponse>(
+      '/api/v3/store/products?limit=100&expand=custom_fields',
+    )
     const products = (json.data || []).map(mapCommerceProduct)
     if (products.length) return withOverrides(products)
   } catch {
@@ -52,7 +54,7 @@ export async function fetchProducts(): Promise<Product[]> {
 export async function fetchProductBySlug(slug: string): Promise<Product | null> {
   try {
     const json = await commerceFetch<CommerceProduct>(
-      `/api/v3/store/products/${encodeURIComponent(slug)}`,
+      `/api/v3/store/products/${encodeURIComponent(slug)}?expand=custom_fields`,
     )
     const product = mapCommerceProduct(json)
     return withOverrides([product])[0] || null

@@ -30,3 +30,8 @@ Summary:
 ## Commerce folder
 
 See [commerce/AGENTS.md](./commerce/AGENTS.md).
+
+## Product custom fields
+
+Lineage / Line / Pack / Brand (and any future fields) are store-wide **metafield definitions**.
+Add more in admin **Settings → Metafields**. Details: [commerce/PRODUCT_FIELDS.md](./commerce/PRODUCT_FIELDS.md).

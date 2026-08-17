@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getCollection, type Product } from '../data/products'
 import { fetchProductBySlug, fetchProducts } from '../api/commerce'
 import { ProductCarousel } from '../components/ProductCarousel'
+import { ProductJsonLd } from '../components/ProductJsonLd'
 
 export function ProductPage() {
   const { id } = useParams()
@@ -66,6 +67,7 @@ export function ProductPage() {
 
   return (
     <div className="section-pad mx-auto max-w-7xl pb-16 pt-24 md:pb-24 md:pt-36">
+      <ProductJsonLd product={product} />
       <Link
         to={collection ? `/collections/${collection.slug}` : '/shop'}
         className={`font-display text-[10px] tracking-[0.22em] uppercase text-muted transition md:text-xs ${

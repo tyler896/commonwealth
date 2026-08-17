@@ -9,3 +9,8 @@ Do not surface the underlying platform name in storefront copy, env var names fo
 ## Production
 
 Live deploy steps (SSH host, compose projects, rebuilds): see [../DEPLOY.md](../DEPLOY.md).
+
+## Product fields
+
+Structured product attributes (Lineage, Line, Pack, Brand, …): [PRODUCT_FIELDS.md](./PRODUCT_FIELDS.md).
+Use `npm run seed:product-fields` to create/sync definitions and copy values onto products.

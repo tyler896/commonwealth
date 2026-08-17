@@ -29,6 +29,13 @@ export function applyCatalogOverrides(
 ): Product[] {
   return products.map((product) => {
     const patch = overrides[product.id]
-    return patch ? { ...product, ...patch } : product
+    if (!patch) return product
+    const next = { ...product, ...patch }
+    if (patch.lineage) {
+      next.attributes = next.attributes.map((a) =>
+        a.key === 'lineage' ? { ...a, value: patch.lineage! } : a,
+      )
+    }
+    return next
   })
 }
