@@ -13,16 +13,17 @@ See [README.md](./README.md).
 
 ## Production deploy
 
-**Read [DEPLOY.md](./DEPLOY.md) before shipping anything live.**
+**Push to `main` auto-deploys** within ~1 minute (no SSH required from the agent).
+
+Details / manual SSH / unlock build-args: [DEPLOY.md](./DEPLOY.md).
 
 Summary:
 
-- SSH as `deploy@24.144.82.195`
-- App path: `/home/deploy/commonwealth`
+- Live host: `24.144.82.195` · app path `/home/deploy/commonwealth`
 - Storefront = Docker Compose project `commonwealth` on `127.0.0.1:3023`
 - Spree = project `commonwealth-commerce` on `127.0.0.1:3024`
 - `/admin` is Spree; storefront catalog admin is `/catalog-admin`
-- Vite env vars are build-args — rebuild the storefront image to change them
+- Vite env vars are build-args — unlock / publishable key changes need a rebuild with those args
 - Never deploy to the old host `64.23.175.154`
 - Never commit `commerce/.env`
 

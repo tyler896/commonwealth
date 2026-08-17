@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Commonwealth auto-deploy every minute
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=1min
+AccuracySec=10s
+Persistent=true
+Unit=commonwealth-autodeploy.service
+
+[Install]
+WantedBy=timers.target

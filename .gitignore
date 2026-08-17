@@ -30,3 +30,7 @@ commerce/.env
 commerce/.env.local
 commerce/.spree/
 **/.spree/
+
+# Deploy runtime
+.deploy-state
+

@@ -2,9 +2,22 @@
 
 Live site: **https://commonwealthseedco.com**
 
-Use this doc when deploying storefront or commerce changes from the `tyler896/commonwealth` repo.
+## Default: push to `main` → auto-deploys
 
-## Access (required once)
+You do **not** need SSH from Cursor to ship.
+
+1. Commit and push to **`main`** (this repo’s usual flow).
+2. Within about **1 minute**, the live host pulls `main` and rebuilds what changed.
+3. Confirm on https://commonwealthseedco.com (hard-refresh if needed).
+
+Server-side job: `commonwealth-autodeploy.timer` → `deploy/auto-deploy.sh`  
+Logs: `journalctl -u commonwealth-autodeploy.service -n 50` (on the host)
+
+Storefront Vite env is still **build-time**. Unlocking the shop or changing the publishable key needs a storefront image rebuild with build-args (auto-deploy rebuilds on `src/` / Dockerfile changes, but unlock flags must be present in the compose/build invocation — ask Frederik if you need unlock toggled).
+
+## Manual SSH (optional)
+
+Use only for debugging, one-off rebuilds with special build-args, or if auto-deploy is stuck.
 
 | Item | Value |
 |------|--------|
@@ -19,9 +32,9 @@ ssh deploy@24.144.82.195
 
 **Do not deploy to** `64.23.175.154` — that was the old shared Spree box; Commonwealth was moved off it.
 
-Tyler’s GitHub SSH key (`tyler896`) is already installed on `deploy`. The `deploy` user is in the `docker` group.
+Tyler’s GitHub SSH key (`tyler896`) is installed on `deploy`. Cursor Cloud / agent sandboxes often **do not** have that private key — prefer push-to-`main` auto-deploy instead of SSH from the agent.
 
-If SSH still fails: confirm you’re using the same key as on GitHub, then ask Frederik to check `~deploy/.ssh/authorized_keys`.
+If SSH still fails from a machine that should have the key: confirm it’s the same key as on GitHub, then ask Frederik to check `~deploy/.ssh/authorized_keys`.
 
 ## What runs where
 
@@ -47,10 +60,10 @@ Nginx (root-owned, usually leave alone):
 
 Do **not** put the React catalog admin on `/admin` — that path is Spree.
 
-## Before every deploy
+## Before every manual deploy
 
 1. Merge/push your work to GitHub (`main` unless told otherwise).
-2. SSH in as `deploy`.
+2. SSH in as `deploy` (optional if auto-deploy is healthy).
 3. Work only under `/home/deploy/commonwealth`.
 4. Never commit or overwrite `commerce/.env` (secrets live only on the server).
 5. Do not change host nginx, SSL certs, ports, or other sites unless Frederik asks.
@@ -70,6 +83,8 @@ If `git pull` fails because of local server-only files, stop and reconcile — d
 
 Anything under `src/`, `public/`, `index.html`, `package.json`, Vite config, or root `Dockerfile` / `docker-compose.prod.yml`.
 
+**Preferred:** push to `main` and wait for auto-deploy.
+
 Vite env is **baked at image build time** via build-args:
 
 | Build-arg | Purpose |
@@ -77,6 +92,7 @@ Vite env is **baked at image build time** via build-args:
 | `VITE_STOREFRONT_UNLOCKED` | `true` = full shop; `false`/unset = lander only |
 | `VITE_COMMERCE_API_URL` | Leave empty for same-origin `/api` |
 | `VITE_COMMERCE_PUBLISHABLE_KEY` | Spree publishable key from admin |
+
 
 ### Rebuild & restart (lander mode — current default)
 
