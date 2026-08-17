@@ -12,6 +12,25 @@ const links = [
   })),
 ]
 
+function CartIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none" />
+      <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L21 8H6.4" />
+    </svg>
+  )
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -75,9 +94,10 @@ export function Navbar() {
           <button
             type="button"
             onClick={openCart}
-            className="relative rounded-full bg-brand-red px-5 py-2 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep"
+            aria-label={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
+            className="relative flex items-center justify-center rounded-full bg-brand-red px-4 py-2 text-white transition hover:bg-brand-red-deep"
           >
-            Bag
+            <CartIcon className="h-4 w-4" />
             {count > 0 && (
               <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-white">
                 {count}
@@ -90,9 +110,10 @@ export function Navbar() {
           <button
             type="button"
             onClick={openCart}
-            className="relative rounded-full bg-brand-red px-3.5 py-1.5 font-display text-[10px] tracking-[0.18em] uppercase text-white"
+            aria-label={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
+            className="relative flex items-center justify-center rounded-full bg-brand-red px-3 py-1.5 text-white"
           >
-            Bag
+            <CartIcon className="h-3.5 w-3.5" />
             {count > 0 && (
               <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[9px] font-bold text-white">
                 {count}
