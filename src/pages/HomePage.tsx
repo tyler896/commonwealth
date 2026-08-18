@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { fetchProducts } from '../api/commerce'
 import type { Product } from '../data/products'
-import { NewsletterSignup } from '../components/NewsletterSignup'
 import { ProductCarousel } from '../components/ProductCarousel'
 
 const TRUST = [
@@ -158,31 +157,6 @@ export function HomePage() {
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* Newsletter */}
-      <section className="relative overflow-hidden bg-leaf-deep">
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-leaf via-leaf-deep to-[#163822]"
-          aria-hidden
-        />
-        <div className="section-pad relative mx-auto max-w-3xl py-16 text-center md:py-24">
-          <p className="font-display text-[10px] tracking-[0.28em] uppercase text-[#cfe9ff] md:text-xs">
-            Drop alerts
-          </p>
-          <h2 className="mt-2 font-blackletter text-3xl leading-tight text-white md:text-4xl lg:text-5xl">
-            Stay in the nest
-          </h2>
-          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-white/88 md:text-base">
-            New Commonwealth lines and release notes — straight from the source.
-          </p>
-          <NewsletterSignup
-            id="home-newsletter-email"
-            className="mx-auto mt-8 flex max-w-lg flex-col gap-3 sm:flex-row sm:items-stretch md:mt-10"
-            inputClassName="flex-1 rounded-full border border-white/25 bg-white px-5 py-3.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30"
-            buttonClassName="rounded-full bg-brand-red px-7 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep disabled:opacity-70"
-          />
-        </div>
       </section>
     </div>
   )
