@@ -198,6 +198,13 @@ img {
   padding-inline: clamp(1.25rem, 4vw, 4rem);
 }
 
+/* Custom class — Tailwind `md:section-pad` does not work */
+@media (min-width: 768px) {
+  .section-pad-md {
+    padding-inline: clamp(1.25rem, 4vw, 4rem);
+  }
+}
+
 .product-carousel {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;

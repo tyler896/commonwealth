@@ -108,7 +108,7 @@ export function HomePage() {
         </div>
 
         {!loadingFeatured && featured.length > 0 && (
-          <div className="mt-8 md:section-pad md:mx-auto md:mt-12 md:max-w-7xl">
+          <div className="section-pad-md mx-auto mt-8 max-w-7xl md:mt-12">
             <ProductCarousel products={featured} label="Featured strains" />
           </div>
         )}

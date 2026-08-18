@@ -45,7 +45,7 @@ export function CollectionSection({
       </div>
 
       {products.length > 0 ? (
-        <div className="md:section-pad md:mx-auto md:max-w-7xl">
+        <div className="section-pad-md mx-auto max-w-7xl">
           <ProductCarousel products={products} label="strains" />
         </div>
       ) : (
