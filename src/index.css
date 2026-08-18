@@ -202,16 +202,27 @@ img {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  scroll-padding-inline: clamp(1.25rem, 4vw, 4rem);
 }
 
-.product-carousel-gutter {
-  flex: 0 0 clamp(1.25rem, 4vw, 4rem);
-  width: clamp(1.25rem, 4vw, 4rem);
+/* Margin (not padding) so snap cannot scroll the inset away */
+.product-carousel [data-carousel-card]:first-of-type {
+  margin-left: clamp(1.25rem, 4vw, 4rem);
+}
+
+.product-carousel [data-carousel-card]:last-of-type {
+  margin-right: clamp(1.25rem, 4vw, 4rem);
 }
 
 @media (min-width: 768px) {
-  .product-carousel-gutter {
-    display: none;
+  .product-carousel {
+    scroll-padding-inline: 0;
+  }
+
+  .product-carousel [data-carousel-card]:first-of-type,
+  .product-carousel [data-carousel-card]:last-of-type {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
