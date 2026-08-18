@@ -21,8 +21,8 @@ export function CollectionSection({
         }
 
   return (
-    <section className="section-pad mx-auto max-w-7xl py-10 md:py-16">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3 md:mb-10 md:gap-4">
+    <section className="overflow-x-clip py-10 md:py-16">
+      <div className="section-pad mx-auto mb-6 flex max-w-7xl flex-wrap items-end justify-between gap-3 md:mb-10 md:gap-4">
         <div className="min-w-0 flex-1">
           <p className={`font-display text-[10px] tracking-[0.28em] uppercase md:text-xs ${accent.label}`}>
             Collection
@@ -45,9 +45,11 @@ export function CollectionSection({
       </div>
 
       {products.length > 0 ? (
-        <ProductCarousel products={products} label="strains" />
+        <div className="md:section-pad md:mx-auto md:max-w-7xl">
+          <ProductCarousel products={products} label="strains" />
+        </div>
       ) : (
-        <p className="text-sm text-muted">Products coming soon.</p>
+        <p className="section-pad mx-auto max-w-7xl text-sm text-muted">Products coming soon.</p>
       )}
     </section>
   )

@@ -73,42 +73,44 @@ export function HomePage() {
       </section>
 
       {/* Featured strains */}
-      <section id="featured" className="section-pad mx-auto max-w-7xl py-16 md:py-24">
-        <p className="font-display text-[10px] tracking-[0.28em] uppercase text-muted md:text-xs">
-          Featured
-        </p>
-        <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-blackletter text-3xl text-ink md:text-4xl lg:text-5xl">
-            Strains in the nest
-          </h2>
-          <Link
-            to="/shop"
-            className="font-display text-[10px] tracking-[0.2em] uppercase text-ink/55 transition hover:text-leaf md:text-xs"
-          >
-            View all →
-          </Link>
+      <section id="featured" className="overflow-x-clip py-16 md:py-24">
+        <div className="section-pad mx-auto max-w-7xl">
+          <p className="font-display text-[10px] tracking-[0.28em] uppercase text-muted md:text-xs">
+            Featured
+          </p>
+          <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
+            <h2 className="font-blackletter text-3xl text-ink md:text-4xl lg:text-5xl">
+              Strains in the nest
+            </h2>
+            <Link
+              to="/shop"
+              className="font-display text-[10px] tracking-[0.2em] uppercase text-ink/55 transition hover:text-leaf md:text-xs"
+            >
+              View all →
+            </Link>
+          </div>
+
+          {loadingFeatured && (
+            <p className="mt-10 text-center font-display text-sm tracking-[0.2em] uppercase text-muted">
+              Loading strains…
+            </p>
+          )}
+
+          {!loadingFeatured && featured.length === 0 && (
+            <p className="mt-10 text-sm text-muted">
+              Catalog is warming up.{' '}
+              <Link to="/shop" className="text-leaf underline-offset-2 hover:underline">
+                Browse the shop
+              </Link>
+              .
+            </p>
+          )}
         </div>
 
-        {loadingFeatured && (
-          <p className="mt-10 text-center font-display text-sm tracking-[0.2em] uppercase text-muted">
-            Loading strains…
-          </p>
-        )}
-
         {!loadingFeatured && featured.length > 0 && (
-          <div className="mt-8 md:mt-12">
+          <div className="mt-8 md:section-pad md:mx-auto md:mt-12 md:max-w-7xl">
             <ProductCarousel products={featured} label="Featured strains" />
           </div>
-        )}
-
-        {!loadingFeatured && featured.length === 0 && (
-          <p className="mt-10 text-sm text-muted">
-            Catalog is warming up.{' '}
-            <Link to="/shop" className="text-leaf underline-offset-2 hover:underline">
-              Browse the shop
-            </Link>
-            .
-          </p>
         )}
       </section>
 
