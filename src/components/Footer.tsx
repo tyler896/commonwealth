@@ -48,17 +48,17 @@ export function Footer() {
 
       <section className="border-t border-brand-blue-line bg-paper">
         <div className="section-pad mx-auto max-w-7xl py-10 md:py-16">
-          <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-20">
-            <Link to="/" className="inline-block w-fit">
+          <div className="grid min-w-0 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-20">
+            <Link to="/" className="inline-block w-fit max-w-full">
               <img
                 src="/images/logo-gold.png"
                 alt="Common Wealth Seed Co"
-                className="h-16 w-auto md:h-28"
+                className="h-16 w-auto max-w-full md:h-28"
               />
             </Link>
 
-            <div className="grid grid-cols-2 gap-8 sm:gap-10 md:min-w-[18rem]">
-              <div>
+            <div className="grid min-w-0 grid-cols-2 gap-6 sm:gap-10">
+              <div className="min-w-0">
                 <h3 className="mb-4 font-display text-xs tracking-[0.22em] uppercase text-brand-blue">
                   Quick Links
                 </h3>
@@ -96,16 +96,16 @@ export function Footer() {
                   </li>
                 </ul>
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 className="mb-4 font-display text-xs tracking-[0.22em] uppercase text-brand-blue">
                   Contact
                 </h3>
-                <ul className="space-y-3 text-sm text-ink/80">
+                <ul className="space-y-3 break-words text-sm text-ink/80">
                   <li>Oregon, USA</li>
                   <li>
                     <a
                       href="mailto:hello@commonwealthseed.co"
-                      className="transition hover:text-brand-red"
+                      className="break-all transition hover:text-brand-red"
                     >
                       hello@commonwealthseed.co
                     </a>
@@ -116,8 +116,8 @@ export function Footer() {
           </div>
 
           <div className="mt-12 flex flex-col gap-4 border-t border-brand-blue-line pt-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Commonwealth Seed Co. All rights reserved.</p>
-            <p>21+ only. Commonwealth genetics exclusively.</p>
+            <p className="min-w-0">© {new Date().getFullYear()} Commonwealth Seed Co. All rights reserved.</p>
+            <p className="min-w-0">21+ only. Commonwealth genetics exclusively.</p>
           </div>
         </div>
       </section>

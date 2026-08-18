@@ -44,13 +44,15 @@ export function HomePage() {
               Seeds for the People
             </h1>
             <p
-              className="mt-3 max-w-md text-sm leading-relaxed text-[#f4ecd8]/85 animate-rise md:mt-5 md:text-base"
+              className="mt-3 w-full max-w-full text-sm leading-relaxed text-[#f4ecd8]/85 animate-rise break-words md:mt-5 md:max-w-md md:text-base"
               style={{ animationDelay: '80ms' }}
             >
-              Feminized Commonwealth genetics - two lines, built for the garden.
+              Feminized Commonwealth genetics.
+              <br className="sm:hidden" />{' '}
+              Two lines, built for the garden.
             </p>
             <div
-              className="mt-6 flex flex-wrap items-center gap-4 animate-rise md:mt-10 md:gap-6"
+              className="mt-6 flex w-full max-w-full flex-col items-start gap-3 animate-rise sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 md:mt-10 md:gap-6"
               style={{ animationDelay: '160ms' }}
             >
               <Link
