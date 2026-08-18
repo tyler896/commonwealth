@@ -37,31 +37,31 @@ export function HomePage() {
   return (
     <div className="bg-paper">
       {/* Hero */}
-      <section className="relative isolate min-h-[100svh] overflow-hidden bg-[#2a8a4a]">
-        <div className="section-pad relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end pb-16 pt-28 md:justify-center md:pb-24 md:pt-32">
-          <div className="max-w-xl">
-            <h1 className="font-blackletter text-4xl leading-[0.95] tracking-tight text-[#f4ecd8] animate-rise sm:text-5xl md:text-6xl lg:text-7xl">
+      <section className="relative isolate h-[80vh] max-h-[80vh] overflow-hidden bg-[#2a8a4a]">
+        <div className="section-pad relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-center pb-10 pt-24 md:pb-16 md:pt-28">
+          <div className="max-w-xl min-w-0">
+            <h1 className="font-blackletter text-[2rem] leading-[1.05] tracking-tight text-[#f4ecd8] animate-rise break-words sm:text-5xl md:text-6xl lg:text-7xl">
               Seeds for the People
             </h1>
             <p
-              className="mt-4 max-w-md text-sm leading-relaxed text-[#f4ecd8]/85 animate-rise md:mt-5 md:text-base"
+              className="mt-3 max-w-md text-sm leading-relaxed text-[#f4ecd8]/85 animate-rise md:mt-5 md:text-base"
               style={{ animationDelay: '80ms' }}
             >
               Feminized Commonwealth genetics - two lines, built for the garden.
             </p>
             <div
-              className="mt-8 flex flex-wrap items-center gap-4 animate-rise md:mt-10 md:gap-6"
+              className="mt-6 flex flex-wrap items-center gap-4 animate-rise md:mt-10 md:gap-6"
               style={{ animationDelay: '160ms' }}
             >
               <Link
                 to="/shop"
-                className="inline-flex items-center justify-center rounded-full bg-brand-red px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep md:px-8 md:text-xs"
+                className="inline-flex items-center justify-center rounded-full bg-brand-red px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase !text-white transition hover:bg-brand-red-deep md:px-8 md:text-xs"
               >
                 Shop the lines
               </Link>
               <a
                 href="#featured"
-                className="font-display text-[10px] tracking-[0.2em] uppercase text-[#f4ecd8]/75 transition hover:text-[#f4ecd8] md:text-xs"
+                className="font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:text-white/80 md:text-xs"
               >
                 Featured strains
               </a>
