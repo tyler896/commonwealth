@@ -35,12 +35,12 @@ export function HomePage() {
   }, [])
 
   return (
-    <div className="bg-paper">
+    <div className="min-w-0 overflow-x-hidden bg-paper">
       {/* Hero */}
       <section className="relative isolate h-[80vh] max-h-[80vh] overflow-hidden bg-[#2a8a4a]">
-        <div className="section-pad relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-center pb-10 pt-24 md:pb-16 md:pt-28">
-          <div className="max-w-xl min-w-0">
-            <h1 className="font-blackletter text-[2rem] leading-[1.05] tracking-tight text-[#f4ecd8] animate-rise break-words sm:text-5xl md:text-6xl lg:text-7xl">
+        <div className="section-pad relative z-10 mx-auto flex h-full min-w-0 max-w-7xl flex-col justify-center pb-10 pt-24 md:pb-16 md:pt-28">
+          <div className="min-w-0 max-w-xl">
+            <h1 className="font-blackletter text-[1.75rem] leading-[1.1] tracking-tight text-[#f4ecd8] animate-rise break-words hyphens-none sm:text-5xl md:text-6xl lg:text-7xl">
               Seeds for the People
             </h1>
             <p

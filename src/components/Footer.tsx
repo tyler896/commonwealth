@@ -57,7 +57,7 @@ export function Footer() {
               />
             </Link>
 
-            <div className="grid grid-cols-2 gap-10 sm:min-w-[18rem]">
+            <div className="grid grid-cols-2 gap-8 sm:gap-10 md:min-w-[18rem]">
               <div>
                 <h3 className="mb-4 font-display text-xs tracking-[0.22em] uppercase text-brand-blue">
                   Quick Links
