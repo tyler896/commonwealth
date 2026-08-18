@@ -151,7 +151,7 @@ export function HomePage() {
         </p>
         <ul className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-10 md:mt-10">
           {TRUST.map((item) => (
-            <li key={item.label} className="text-center sm:text-left">
+            <li key={item.label} className="text-center">
               <p className="font-blackletter text-xl text-ink md:text-2xl">{item.label}</p>
               <p className="mt-2 text-sm text-muted">{item.detail}</p>
             </li>
