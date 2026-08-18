@@ -56,7 +56,7 @@ export function ProductPage() {
     return (
       <div className="section-pad mx-auto max-w-3xl py-32 text-center md:py-40">
         <h1 className="font-display text-3xl text-ink md:text-4xl">Strain not found</h1>
-        <Link to="/shop" className="mt-6 inline-block text-leaf">
+        <Link to="/" className="mt-6 inline-block text-leaf">
           Back to home
         </Link>
       </div>

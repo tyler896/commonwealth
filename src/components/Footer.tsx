@@ -1,17 +1,7 @@
-import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { NewsletterSignup } from './NewsletterSignup'
 
 export function Footer() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'ok'>('idle')
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    if (!email.trim()) return
-    setStatus('ok')
-    setEmail('')
-  }
-
   return (
     <footer>
       <section className="relative overflow-hidden bg-leaf-deep">
@@ -36,32 +26,12 @@ export function Footer() {
               Drop announcements and new Commonwealth lines — straight from the source.
             </p>
 
-            <form
-              onSubmit={onSubmit}
+            <NewsletterSignup
+              id="footer-newsletter-email"
               className="mt-6 flex max-w-lg flex-col gap-3 sm:flex-row sm:items-stretch md:mt-8"
-            >
-              <label className="sr-only" htmlFor="newsletter-email">
-                Email
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="flex-1 rounded-full border border-white/25 bg-white px-5 py-3.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30"
-              />
-              <button
-                type="submit"
-                className="rounded-full bg-brand-red px-7 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white shadow-[0_10px_28px_rgba(217,18,18,0.28)] transition hover:bg-brand-red-deep"
-              >
-                Subscribe
-              </button>
-            </form>
-            {status === 'ok' && (
-              <p className="mt-3 text-sm text-gold">You&apos;re on the list. Welcome to the flock.</p>
-            )}
+              inputClassName="flex-1 rounded-full border border-white/25 bg-white px-5 py-3.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30"
+              buttonClassName="rounded-full bg-brand-red px-7 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white shadow-[0_10px_28px_rgba(217,18,18,0.28)] transition hover:bg-brand-red-deep disabled:opacity-70"
+            />
           </div>
 
           <div className="relative order-1 mx-auto w-full max-w-[13rem] animate-fade sm:max-w-[16rem] md:order-2 md:max-w-none md:justify-self-end">
@@ -79,7 +49,7 @@ export function Footer() {
       <section className="border-t border-brand-blue-line bg-paper">
         <div className="section-pad mx-auto max-w-7xl py-10 md:py-16">
           <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-20">
-            <Link to="/shop" className="inline-block w-fit">
+            <Link to="/" className="inline-block w-fit">
               <img
                 src="/images/logo-gold.png"
                 alt="Common Wealth Seed Co"
@@ -94,8 +64,13 @@ export function Footer() {
                 </h3>
                 <ul className="space-y-3 text-sm text-ink/80">
                   <li>
-                    <Link to="/shop" className="transition hover:text-brand-red">
+                    <Link to="/" className="transition hover:text-brand-red">
                       Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/shop" className="transition hover:text-brand-red">
+                      Shop
                     </Link>
                   </li>
                   <li>

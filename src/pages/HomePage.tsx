@@ -1,0 +1,207 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { fetchProducts } from '../api/commerce'
+import type { Product } from '../data/products'
+import { NewsletterSignup } from '../components/NewsletterSignup'
+import { ProductCarousel } from '../components/ProductCarousel'
+
+const TRUST = [
+  { label: 'Feminized genetics', detail: 'Stable crosses for the garden' },
+  { label: 'Oregon-bred', detail: 'Selected and worked in-house' },
+  { label: 'Two lines', detail: 'Wild Thornberry & Grape Sunshine' },
+] as const
+
+export function HomePage() {
+  const [featured, setFeatured] = useState<Product[]>([])
+  const [loadingFeatured, setLoadingFeatured] = useState(true)
+
+  useEffect(() => {
+    let alive = true
+    fetchProducts()
+      .then((items) => {
+        if (!alive) return
+        const picks = items.filter((p) => p.featured)
+        setFeatured((picks.length ? picks : items).slice(0, 8))
+      })
+      .catch(() => {
+        if (alive) setFeatured([])
+      })
+      .finally(() => {
+        if (alive) setLoadingFeatured(false)
+      })
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  return (
+    <div className="bg-paper">
+      {/* Hero */}
+      <section className="relative isolate min-h-[100svh] overflow-hidden">
+        <img
+          src="/images/nest-crow.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-[center_30%] animate-fade"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-ink/88 via-ink/55 to-ink/25"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/35"
+          aria-hidden
+        />
+
+        <div className="section-pad relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end pb-16 pt-28 md:justify-center md:pb-24 md:pt-32">
+          <div className="max-w-xl">
+            <img
+              src="/images/logo-gold.png"
+              alt="Commonwealth Seed Co"
+              className="h-14 w-auto animate-rise sm:h-16 md:h-20"
+            />
+            <h1
+              className="mt-6 font-blackletter text-4xl leading-[0.95] tracking-tight text-white animate-rise sm:text-5xl md:mt-8 md:text-6xl lg:text-7xl"
+              style={{ animationDelay: '80ms' }}
+            >
+              Seeds for the People
+            </h1>
+            <p
+              className="mt-4 max-w-md text-sm leading-relaxed text-white/85 animate-rise md:mt-5 md:text-base"
+              style={{ animationDelay: '160ms' }}
+            >
+              Feminized Commonwealth genetics — two lines, built for the garden.
+            </p>
+            <div
+              className="mt-8 flex flex-wrap items-center gap-4 animate-rise md:mt-10 md:gap-6"
+              style={{ animationDelay: '240ms' }}
+            >
+              <Link
+                to="/shop"
+                className="inline-flex items-center justify-center rounded-full bg-leaf px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-leaf-bright md:px-8 md:text-xs"
+              >
+                Shop the lines
+              </Link>
+              <a
+                href="#featured"
+                className="font-display text-[10px] tracking-[0.2em] uppercase text-white/75 transition hover:text-white md:text-xs"
+              >
+                Featured strains
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured strains */}
+      <section id="featured" className="section-pad mx-auto max-w-7xl py-16 md:py-24">
+        <p className="font-display text-[10px] tracking-[0.28em] uppercase text-muted md:text-xs">
+          Featured
+        </p>
+        <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
+          <h2 className="font-blackletter text-3xl text-ink md:text-4xl lg:text-5xl">
+            Strains in the nest
+          </h2>
+          <Link
+            to="/shop"
+            className="font-display text-[10px] tracking-[0.2em] uppercase text-ink/55 transition hover:text-leaf md:text-xs"
+          >
+            View all →
+          </Link>
+        </div>
+
+        {loadingFeatured && (
+          <p className="mt-10 text-center font-display text-sm tracking-[0.2em] uppercase text-muted">
+            Loading strains…
+          </p>
+        )}
+
+        {!loadingFeatured && featured.length > 0 && (
+          <div className="mt-8 md:mt-12">
+            <ProductCarousel products={featured} label="Featured strains" />
+          </div>
+        )}
+
+        {!loadingFeatured && featured.length === 0 && (
+          <p className="mt-10 text-sm text-muted">
+            Catalog is warming up.{' '}
+            <Link to="/shop" className="text-leaf underline-offset-2 hover:underline">
+              Browse the shop
+            </Link>
+            .
+          </p>
+        )}
+      </section>
+
+      {/* Brand story teaser */}
+      <section className="border-y border-line bg-paper-soft">
+        <div className="section-pad mx-auto grid max-w-7xl items-center gap-10 py-16 md:grid-cols-2 md:gap-16 md:py-24">
+          <div className="relative mx-auto aspect-square w-full max-w-sm animate-fade md:max-w-md">
+            <img
+              src="/images/logo-circle.png"
+              alt=""
+              className="h-full w-full object-contain drop-shadow-[0_18px_36px_rgba(0,0,0,0.12)]"
+            />
+          </div>
+          <div className="animate-rise">
+            <p className="font-display text-[10px] tracking-[0.28em] uppercase text-leaf md:text-xs">
+              Our story
+            </p>
+            <h2 className="mt-2 font-blackletter text-3xl leading-tight text-ink md:text-4xl lg:text-[2.75rem]">
+              Genetics for the commons
+            </h2>
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted md:mt-5 md:text-base">
+              Commonwealth Seed Co works feminized lines meant to be shared — selected crosses,
+              clear lineage, and packs ready for growers who want something real in the soil.
+            </p>
+            <Link
+              to="/shop"
+              className="mt-6 inline-block font-display text-[10px] tracking-[0.2em] uppercase text-leaf transition hover:text-leaf-deep md:mt-8 md:text-xs"
+            >
+              Explore the catalog →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust */}
+      <section className="section-pad mx-auto max-w-7xl py-14 md:py-20">
+        <p className="text-center font-display text-[10px] tracking-[0.28em] uppercase text-muted md:text-xs">
+          Why Commonwealth
+        </p>
+        <ul className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-10 md:mt-10">
+          {TRUST.map((item) => (
+            <li key={item.label} className="text-center sm:text-left">
+              <p className="font-blackletter text-xl text-ink md:text-2xl">{item.label}</p>
+              <p className="mt-2 text-sm text-muted">{item.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Newsletter */}
+      <section className="relative overflow-hidden bg-leaf-deep">
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-leaf via-leaf-deep to-[#163822]"
+          aria-hidden
+        />
+        <div className="section-pad relative mx-auto max-w-3xl py-16 text-center md:py-24">
+          <p className="font-display text-[10px] tracking-[0.28em] uppercase text-[#cfe9ff] md:text-xs">
+            Drop alerts
+          </p>
+          <h2 className="mt-2 font-blackletter text-3xl leading-tight text-white md:text-4xl lg:text-5xl">
+            Stay in the nest
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-white/88 md:text-base">
+            New Commonwealth lines and release notes — straight from the source.
+          </p>
+          <NewsletterSignup
+            id="home-newsletter-email"
+            className="mx-auto mt-8 flex max-w-lg flex-col gap-3 sm:flex-row sm:items-stretch md:mt-10"
+            inputClassName="flex-1 rounded-full border border-white/25 bg-white px-5 py-3.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30"
+            buttonClassName="rounded-full bg-brand-red px-7 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep disabled:opacity-70"
+          />
+        </div>
+      </section>
+    </div>
+  )
+}

@@ -1,14 +1,16 @@
-import { Link, NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useCart } from '../cart/CartContext'
 import { collections } from '../data/products'
 
 const links = [
-  { to: '/shop', label: 'Home', accent: 'ink' as const },
+  { to: '/', label: 'Home', accent: 'ink' as const, end: true },
+  { to: '/shop', label: 'Shop', accent: 'ink' as const, end: true },
   ...collections.map((c) => ({
     to: `/collections/${c.slug}`,
     label: c.id === 'wild-thornberry' ? 'Wild Thornberry' : 'Grape Sunshine',
-    accent: c.accent === 'red' ? ('red' as const) : ('purple' as const),
+    accent: (c.accent === 'red' ? 'red' : 'purple') as 'red' | 'purple',
+    end: false,
   })),
 ]
 
@@ -35,6 +37,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { count, openCart } = useCart()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -50,6 +53,26 @@ export function Navbar() {
     }
   }, [open])
 
+  const linkClass = (to: string, accent: 'ink' | 'red' | 'purple', isActive: boolean) => {
+    const active =
+      accent === 'red' ? 'text-brand-red' : accent === 'purple' ? 'text-raven' : 'text-ink'
+    // Force exact match for Home — RR can treat "/" as a prefix of every path.
+    const on =
+      to === '/' ? pathname === '/' || pathname === '' : isActive
+    return `font-display text-xs tracking-[0.16em] uppercase transition-colors lg:text-sm lg:tracking-[0.18em] ${
+      on ? active : 'text-ink/65 hover:text-ink'
+    }`
+  }
+
+  const mobileLinkClass = (to: string, accent: 'ink' | 'red' | 'purple', isActive: boolean) => {
+    const active =
+      accent === 'red' ? 'text-brand-red' : accent === 'purple' ? 'text-raven' : 'text-ink'
+    const on = to === '/' ? pathname === '/' || pathname === '' : isActive
+    return `border-b border-line py-4 font-display text-2xl tracking-tight transition ${
+      on ? active : 'text-ink'
+    }`
+  }
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b border-line pt-[env(safe-area-inset-top)] transition-all duration-300 ${
@@ -58,7 +81,7 @@ export function Navbar() {
     >
       <div className="section-pad mx-auto flex h-14 max-w-7xl items-center justify-between md:h-20">
         <Link
-          to="/shop"
+          to="/"
           className="relative z-10 flex min-w-0 items-center gap-3"
           onClick={() => setOpen(false)}
         >
@@ -75,18 +98,8 @@ export function Navbar() {
             <NavLink
               key={link.to}
               to={link.to}
-              end={link.to === '/shop'}
-              className={({ isActive }) => {
-                const active =
-                  link.accent === 'red'
-                    ? 'text-brand-red'
-                    : link.accent === 'purple'
-                      ? 'text-raven'
-                      : 'text-ink'
-                return `font-display text-xs tracking-[0.16em] uppercase transition-colors lg:text-sm lg:tracking-[0.18em] ${
-                  isActive ? active : 'text-ink/65 hover:text-ink'
-                }`
-              }}
+              end={link.end}
+              className={({ isActive }) => linkClass(link.to, link.accent, isActive)}
             >
               {link.label}
             </NavLink>
@@ -147,19 +160,9 @@ export function Navbar() {
               <NavLink
                 key={link.to}
                 to={link.to}
-                end={link.to === '/shop'}
+                end={link.end}
                 onClick={() => setOpen(false)}
-                className={({ isActive }) => {
-                  const active =
-                    link.accent === 'red'
-                      ? 'text-brand-red'
-                      : link.accent === 'purple'
-                        ? 'text-raven'
-                        : 'text-ink'
-                  return `border-b border-line py-4 font-display text-2xl tracking-tight transition ${
-                    isActive ? active : 'text-ink'
-                  }`
-                }}
+                className={({ isActive }) => mobileLinkClass(link.to, link.accent, isActive)}
               >
                 {link.label}
               </NavLink>

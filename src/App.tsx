@@ -9,6 +9,7 @@ import {
 import { AdminPage } from './pages/AdminPage'
 import { SpreeAdminRedirect } from './pages/SpreeAdminRedirect'
 import { LanderPage } from './pages/LanderPage'
+import { HomePage } from './pages/HomePage'
 import { ShopPage } from './pages/ShopPage'
 import { ProductPage } from './pages/ProductPage'
 import { CollectionPage } from './pages/CollectionPage'
@@ -51,12 +52,12 @@ export default function App() {
           <Route path="/catalog-admin/*" element={<AdminPage />} />
           <Route path="/admin/*" element={<SpreeAdminRedirect />} />
           <Route element={<Layout />}>
-            <Route index element={<Navigate to="/shop" replace />} />
+            <Route index element={<HomePage />} />
             <Route path="shop" element={<ShopPage />} />
             <Route path="shop/:id" element={<ProductPage />} />
             <Route path="collections/:slug" element={<CollectionPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
-            <Route path="*" element={<Navigate to="/shop" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
       </CartProvider>
