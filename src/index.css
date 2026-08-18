@@ -202,6 +202,13 @@ img {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+@media (min-width: 768px) {
+  .product-carousel {
+    padding-inline: 0;
+  }
 }
 
 .product-carousel::-webkit-scrollbar {
