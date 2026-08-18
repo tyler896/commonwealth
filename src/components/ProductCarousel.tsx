@@ -62,8 +62,7 @@ export function ProductCarousel({
     if (!el) return
     const card = el.querySelectorAll<HTMLElement>('[data-carousel-card]')[i]
     if (!card) return
-    const left = card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2
-    el.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+    el.scrollTo({ left: card.offsetLeft - el.clientLeft, behavior: 'smooth' })
   }
 
   if (!products.length) return null
@@ -98,13 +97,13 @@ export function ProductCarousel({
 
       <div
         ref={scrollerRef}
-        className="product-carousel flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
+        className="product-carousel flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 pt-1 pl-[clamp(1.25rem,4vw,4rem)] pr-[clamp(1.25rem,4vw,4rem)] [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
       >
         {products.map((product) => (
           <div
             key={product.catalogId}
             data-carousel-card
-            className="w-[78vw] max-w-[22rem] shrink-0 snap-center first:ml-[11vw] last:mr-[11vw] md:ml-0 md:mr-0 md:w-auto md:max-w-none"
+            className="w-[78vw] max-w-[22rem] shrink-0 snap-start md:w-auto md:max-w-none"
           >
             <ProductCard product={product} compact />
           </div>
