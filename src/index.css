@@ -202,12 +202,16 @@ img {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
-  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+.product-carousel-gutter {
+  flex: 0 0 clamp(1.25rem, 4vw, 4rem);
+  width: clamp(1.25rem, 4vw, 4rem);
 }
 
 @media (min-width: 768px) {
-  .product-carousel {
-    padding-inline: 0;
+  .product-carousel-gutter {
+    display: none;
   }
 }
 

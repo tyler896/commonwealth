@@ -40,6 +40,7 @@ export function ProductCarousel({
   useEffect(() => {
     const el = scrollerRef.current
     if (!el) return
+    el.scrollLeft = 0
     update()
     el.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
@@ -62,7 +63,7 @@ export function ProductCarousel({
     if (!el) return
     const card = el.querySelectorAll<HTMLElement>('[data-carousel-card]')[i]
     if (!card) return
-    el.scrollTo({ left: card.offsetLeft - el.clientLeft, behavior: 'smooth' })
+    el.scrollTo({ left: card.offsetLeft, behavior: 'smooth' })
   }
 
   if (!products.length) return null
@@ -99,6 +100,7 @@ export function ProductCarousel({
         ref={scrollerRef}
         className="product-carousel flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
       >
+        <div className="product-carousel-gutter" aria-hidden />
         {products.map((product) => (
           <div
             key={product.catalogId}
@@ -108,6 +110,7 @@ export function ProductCarousel({
             <ProductCard product={product} compact />
           </div>
         ))}
+        <div className="product-carousel-gutter" aria-hidden />
       </div>
 
       <div className="mt-4 flex justify-center gap-1.5 md:hidden">
