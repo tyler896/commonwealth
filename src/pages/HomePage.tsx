@@ -37,28 +37,14 @@ export function HomePage() {
   return (
     <div className="bg-paper">
       {/* Hero */}
-      <section className="relative isolate min-h-[100svh] overflow-hidden">
-        <img
-          src="/images/nest-crow.png"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[center_30%] animate-fade"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-ink/88 via-ink/55 to-ink/25"
-          aria-hidden
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/35"
-          aria-hidden
-        />
-
+      <section className="relative isolate min-h-[100svh] overflow-hidden bg-[#2a8a4a]">
         <div className="section-pad relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end pb-16 pt-28 md:justify-center md:pb-24 md:pt-32">
           <div className="max-w-xl">
-            <h1 className="font-blackletter text-4xl leading-[0.95] tracking-tight text-white animate-rise sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="font-blackletter text-4xl leading-[0.95] tracking-tight text-[#f4ecd8] animate-rise sm:text-5xl md:text-6xl lg:text-7xl">
               Seeds for the People
             </h1>
             <p
-              className="mt-4 max-w-md text-sm leading-relaxed text-white/85 animate-rise md:mt-5 md:text-base"
+              className="mt-4 max-w-md text-sm leading-relaxed text-[#f4ecd8]/85 animate-rise md:mt-5 md:text-base"
               style={{ animationDelay: '80ms' }}
             >
               Feminized Commonwealth genetics - two lines, built for the garden.
@@ -75,7 +61,7 @@ export function HomePage() {
               </Link>
               <a
                 href="#featured"
-                className="font-display text-[10px] tracking-[0.2em] uppercase text-white/75 transition hover:text-white md:text-xs"
+                className="font-display text-[10px] tracking-[0.2em] uppercase text-[#f4ecd8]/75 transition hover:text-[#f4ecd8] md:text-xs"
               >
                 Featured strains
               </a>
