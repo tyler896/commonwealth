@@ -54,30 +54,22 @@ export function HomePage() {
 
         <div className="section-pad relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end pb-16 pt-28 md:justify-center md:pb-24 md:pt-32">
           <div className="max-w-xl">
-            <img
-              src="/images/logo-gold.png"
-              alt="Commonwealth Seed Co"
-              className="h-14 w-auto animate-rise sm:h-16 md:h-20"
-            />
-            <h1
-              className="mt-6 font-blackletter text-4xl leading-[0.95] tracking-tight text-white animate-rise sm:text-5xl md:mt-8 md:text-6xl lg:text-7xl"
-              style={{ animationDelay: '80ms' }}
-            >
+            <h1 className="font-blackletter text-4xl leading-[0.95] tracking-tight text-white animate-rise sm:text-5xl md:text-6xl lg:text-7xl">
               Seeds for the People
             </h1>
             <p
               className="mt-4 max-w-md text-sm leading-relaxed text-white/85 animate-rise md:mt-5 md:text-base"
-              style={{ animationDelay: '160ms' }}
+              style={{ animationDelay: '80ms' }}
             >
-              Feminized Commonwealth genetics — two lines, built for the garden.
+              Feminized Commonwealth genetics - two lines, built for the garden.
             </p>
             <div
               className="mt-8 flex flex-wrap items-center gap-4 animate-rise md:mt-10 md:gap-6"
-              style={{ animationDelay: '240ms' }}
+              style={{ animationDelay: '160ms' }}
             >
               <Link
                 to="/shop"
-                className="inline-flex items-center justify-center rounded-full bg-leaf px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-leaf-bright md:px-8 md:text-xs"
+                className="inline-flex items-center justify-center rounded-full bg-brand-red px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep md:px-8 md:text-xs"
               >
                 Shop the lines
               </Link>
