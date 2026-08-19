@@ -12,6 +12,7 @@
     "seed": "spree seed",
     "seed:commonwealth": "docker compose cp scripts/seed_commonwealth.rb web:/rails/tmp/seed_commonwealth.rb && docker compose exec -T web bin/rails runner /rails/tmp/seed_commonwealth.rb",
     "seed:product-fields": "docker compose cp scripts/seed_product_fields.rb web:/rails/tmp/seed_product_fields.rb && docker compose exec -T web bin/rails runner /rails/tmp/seed_product_fields.rb",
+    "seed:wholesale": "docker compose cp scripts/seed_wholesale.rb web:/rails/tmp/seed_wholesale.rb && docker compose exec -T web bin/rails runner /rails/tmp/seed_wholesale.rb",
     "load-sample-data": "spree sample-data",
     "console": "spree console",
     "api": "spree api",

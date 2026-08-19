@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useCart } from '../cart/CartContext'
+import { useAuth } from '../auth/AuthContext'
 import { collections } from '../data/products'
 
 const links = [
   { to: '/', label: 'Home', accent: 'ink' as const, end: true },
   { to: '/shop', label: 'Shop', accent: 'ink' as const, end: true },
   { to: '/about', label: 'About', accent: 'ink' as const, end: true },
+  { to: '/wholesale', label: 'Wholesale', accent: 'ink' as const, end: true },
   ...collections.map((c) => ({
     to: `/collections/${c.slug}`,
     label: c.id === 'wild-thornberry' ? 'Wild Thornberry' : 'Grape Sunshine',
@@ -38,6 +40,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { count, openCart } = useCart()
+  const { user, tierLabel, logout } = useAuth()
   const { pathname } = useLocation()
 
   useEffect(() => {
@@ -105,6 +108,30 @@ export function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          {user ? (
+            <div className="flex items-center gap-3">
+              <Link
+                to="/wholesale/login"
+                className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/70 transition hover:text-ink"
+              >
+                {tierLabel || 'Account'}
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/50 transition hover:text-ink"
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/wholesale/login"
+              className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/70 transition hover:text-ink"
+            >
+              Trade login
+            </Link>
+          )}
           <button
             type="button"
             onClick={openCart}
@@ -168,6 +195,25 @@ export function Navbar() {
                 {link.label}
               </NavLink>
             ))}
+            <NavLink
+              to="/wholesale/login"
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => mobileLinkClass('/wholesale/login', 'ink', isActive)}
+            >
+              {user ? (tierLabel ? `${tierLabel} account` : 'Trade account') : 'Trade login'}
+            </NavLink>
+            {user && (
+              <button
+                type="button"
+                onClick={() => {
+                  logout()
+                  setOpen(false)
+                }}
+                className="border-b border-line py-4 text-left font-display text-2xl tracking-tight text-ink/60"
+              >
+                Sign out
+              </button>
+            )}
           </nav>
         </div>
       )}

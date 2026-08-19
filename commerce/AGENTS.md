@@ -14,3 +14,11 @@ Live deploy steps (SSH host, compose projects, rebuilds): see [../DEPLOY.md](../
 
 Structured product attributes (Lineage, Line, Pack, Brand, …): [PRODUCT_FIELDS.md](./PRODUCT_FIELDS.md).
 Use `npm run seed:product-fields` to create/sync definitions and copy values onto products.
+
+## Wholesale / B2B
+
+- Public apply form: storefront `/wholesale`
+- Login: storefront `/wholesale/login` (JWT); approved accounts see tier prices automatically
+- Staff: Spree Admin sidebar **Wholesale Customers** — approve (assign Wholesale or Distro), reject, remove, change tier
+- Pricing: **Products → Price Lists** (`Wholesale` and `Distro` lists). Seed with `npm run seed:wholesale`
+- Approving adds the customer to the matching Customer Group; that membership drives Price List resolution

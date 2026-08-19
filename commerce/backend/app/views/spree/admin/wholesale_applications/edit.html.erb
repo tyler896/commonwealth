@@ -1,0 +1,93 @@
+<% content_for :page_title do %>
+  <%= @wholesale_application.company_name %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to '← All wholesale customers', spree.admin_wholesale_applications_path, class: 'btn btn-light' %>
+<% end %>
+
+<div class="grid gap-6 lg:grid-cols-2">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Application</h5>
+    </div>
+    <div class="card-body space-y-3 text-sm">
+      <div><span class="text-zinc-500">Status</span><div class="font-medium"><%= @wholesale_application.status.titleize %></div></div>
+      <div><span class="text-zinc-500">Tier</span><div class="font-medium"><%= @wholesale_application.tier_label || 'Not assigned' %></div></div>
+      <div><span class="text-zinc-500">Company</span><div class="font-medium"><%= @wholesale_application.company_name %></div></div>
+      <div><span class="text-zinc-500">Contact</span><div class="font-medium"><%= @wholesale_application.contact_name %></div></div>
+      <div><span class="text-zinc-500">Email</span><div class="font-medium"><%= @wholesale_application.email %></div></div>
+      <div><span class="text-zinc-500">Phone</span><div class="font-medium"><%= @wholesale_application.phone.presence || '—' %></div></div>
+      <div><span class="text-zinc-500">Website</span><div class="font-medium"><%= @wholesale_application.website.presence || '—' %></div></div>
+      <div><span class="text-zinc-500">License / resale #</span><div class="font-medium"><%= @wholesale_application.license_number.presence || '—' %></div></div>
+      <div><span class="text-zinc-500">Notes</span><div class="font-medium whitespace-pre-wrap"><%= @wholesale_application.notes.presence || '—' %></div></div>
+      <div><span class="text-zinc-500">Customer account</span>
+        <div class="font-medium">
+          <% if @wholesale_application.user %>
+            <%= @wholesale_application.user.email %> (ID <%= @wholesale_application.user.id %>)
+          <% else %>
+            Not linked
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Actions</h5>
+    </div>
+    <div class="card-body space-y-6">
+      <% if @wholesale_application.pending? %>
+        <div>
+          <p class="text-sm text-zinc-600 mb-3">Approve and assign a pricing tier. The customer must log in on the storefront to see tier prices.</p>
+          <%= form_with url: spree.approve_admin_wholesale_application_path(@wholesale_application), method: :put, local: true, class: 'flex flex-wrap gap-3 items-end' do %>
+            <div>
+              <label class="block text-xs uppercase tracking-wide text-zinc-500 mb-1">Tier</label>
+              <%= select_tag :tier,
+                    options_for_select([['Wholesale', 'wholesale'], ['Distro', 'distro']]),
+                    class: 'form-control',
+                    required: true %>
+            </div>
+            <%= button_tag 'Approve', class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+        <div>
+          <%= button_to 'Reject application',
+                spree.reject_admin_wholesale_application_path(@wholesale_application),
+                method: :put,
+                class: 'btn btn-light',
+                data: { turbo_confirm: 'Reject this wholesale application?' } %>
+        </div>
+      <% end %>
+
+      <% if @wholesale_application.approved? %>
+        <div>
+          <p class="text-sm text-zinc-600 mb-3">Change pricing tier (moves customer between Wholesale and Distro groups).</p>
+          <%= form_with url: spree.change_tier_admin_wholesale_application_path(@wholesale_application), method: :put, local: true, class: 'flex flex-wrap gap-3 items-end' do %>
+            <div>
+              <label class="block text-xs uppercase tracking-wide text-zinc-500 mb-1">Tier</label>
+              <%= select_tag :tier,
+                    options_for_select([['Wholesale', 'wholesale'], ['Distro', 'distro']], @wholesale_application.tier),
+                    class: 'form-control',
+                    required: true %>
+            </div>
+            <%= button_tag 'Update tier', class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+        <div>
+          <%= button_to 'Remove wholesale access',
+                spree.revoke_admin_wholesale_application_path(@wholesale_application),
+                method: :put,
+                class: 'btn btn-danger',
+                data: { turbo_confirm: 'Remove this account from wholesale/distro pricing?' } %>
+        </div>
+      <% end %>
+
+      <p class="text-xs text-zinc-500">
+        Tier prices are managed in
+        <%= link_to 'Products → Price Lists', spree.admin_price_lists_path, class: 'underline' %>.
+      </p>
+    </div>
+  </div>
+</div>

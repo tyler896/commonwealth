@@ -35,3 +35,10 @@ See [commerce/AGENTS.md](./commerce/AGENTS.md).
 
 Lineage / Line / Pack / Brand (and any future fields) are store-wide **metafield definitions**.
 Add more in admin **Settings → Metafields**. Details: [commerce/PRODUCT_FIELDS.md](./commerce/PRODUCT_FIELDS.md).
+
+## Wholesale / B2B
+
+- Apply: `/wholesale` · Login: `/wholesale/login`
+- Admin: Spree **Wholesale Customers** sidebar — approve into Wholesale or Distro
+- Prices: **Products → Price Lists** (seed with `npm run seed:wholesale` from `commerce/`)
+- Details: [commerce/AGENTS.md](./commerce/AGENTS.md)

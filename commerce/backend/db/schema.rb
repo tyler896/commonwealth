@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_28_105403) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_163000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -2408,6 +2408,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_28_105403) do
     t.index ["kind"], name: "index_spree_zones_on_kind"
   end
 
+  create_table "spree_wholesale_applications", force: :cascade do |t|
+    t.string "company_name", null: false
+    t.string "contact_name", null: false
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.string "license_number"
+    t.text "notes"
+    t.string "phone"
+    t.datetime "reviewed_at"
+    t.bigint "reviewed_by_id"
+    t.string "status", default: "pending", null: false
+    t.bigint "store_id", null: false
+    t.string "tier"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.string "website"
+    t.index ["email"], name: "index_spree_wholesale_applications_on_email"
+    t.index ["status"], name: "index_spree_wholesale_applications_on_status"
+    t.index ["store_id", "email"], name: "index_spree_wholesale_applications_on_store_id_and_email"
+    t.index ["store_id"], name: "index_spree_wholesale_applications_on_store_id"
+    t.index ["tier"], name: "index_spree_wholesale_applications_on_tier"
+    t.index ["user_id"], name: "index_spree_wholesale_applications_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
@@ -2424,4 +2448,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_28_105403) do
   add_foreign_key "spree_store_translations", "spree_stores"
   add_foreign_key "spree_taxon_translations", "spree_taxons"
   add_foreign_key "spree_taxonomy_translations", "spree_taxonomies"
+  add_foreign_key "spree_wholesale_applications", "spree_stores", column: "store_id"
+  add_foreign_key "spree_wholesale_applications", "spree_users", column: "user_id"
 end

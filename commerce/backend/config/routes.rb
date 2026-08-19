@@ -13,6 +13,25 @@ Rails.application.routes.draw do
       path: :admin_user,
       router_name: :spree
     )
+
+    namespace :admin do
+      resources :wholesale_applications, only: %i[index edit update] do
+        member do
+          put :approve
+          put :reject
+          put :revoke
+          put :change_tier
+        end
+      end
+    end
+
+    namespace :api, defaults: { format: 'json' } do
+      namespace :v3 do
+        namespace :store do
+          resources :wholesale_applications, only: %i[create]
+        end
+      end
+    end
   end
   # This line mounts Spree's routes at the root of your application.
   # This means, any requests to URLs such as /products, will go to

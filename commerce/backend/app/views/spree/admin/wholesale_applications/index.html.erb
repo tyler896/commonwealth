@@ -1,0 +1,71 @@
+<%#
+  Wholesale applications index — pending + approved accounts.
+%>
+<% content_for :page_title do %>
+  Wholesale Customers
+<% end %>
+
+<% content_for :page_actions do %>
+  <span class="text-sm text-zinc-500">
+    Approve applicants into Wholesale or Distro tiers. Edit tier prices under Products → Price Lists.
+  </span>
+<% end %>
+
+<div class="card mb-6">
+  <div class="card-header flex items-center justify-between gap-4">
+    <h5 class="card-title mb-0">Applications</h5>
+    <%= form_with url: spree.admin_wholesale_applications_path, method: :get, local: true, class: 'flex gap-2 items-center' do %>
+      <%= select_tag 'q[status_eq]',
+            options_for_select(
+              [['All statuses', '']] + Spree::WholesaleApplication::STATUSES.map { |s| [s.titleize, s] },
+              params.dig(:q, :status_eq)
+            ),
+            class: 'form-control form-control-sm' %>
+      <%= text_field_tag 'q[company_name_or_email_or_contact_name_cont]',
+            params.dig(:q, :company_name_or_email_or_contact_name_cont),
+            placeholder: 'Search company / email',
+            class: 'form-control form-control-sm' %>
+      <%= button_tag 'Filter', class: 'btn btn-sm btn-primary' %>
+    <% end %>
+  </div>
+  <div class="card-body p-0 overflow-x-auto">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Tier</th>
+          <th>Submitted</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @wholesale_applications.any? %>
+          <% @wholesale_applications.each do |app| %>
+            <tr>
+              <td class="font-medium"><%= app.company_name %></td>
+              <td><%= app.contact_name %></td>
+              <td><%= app.email %></td>
+              <td>
+                <span class="badge <%= app.pending? ? 'badge-warning' : app.approved? ? 'badge-success' : 'badge-secondary' %>">
+                  <%= app.status.titleize %>
+                </span>
+              </td>
+              <td><%= app.tier_label || '—' %></td>
+              <td class="text-sm text-zinc-500"><%= l(app.created_at, format: :short) rescue app.created_at.to_fs(:short) %></td>
+              <td class="text-right">
+                <%= link_to 'Manage', spree.edit_admin_wholesale_application_path(app), class: 'btn btn-sm btn-light' %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="7" class="text-center text-zinc-500 py-10">No wholesale applications yet.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
