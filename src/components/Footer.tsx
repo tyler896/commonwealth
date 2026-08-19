@@ -74,6 +74,11 @@ export function Footer() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/about" className="transition hover:text-brand-red">
+                      About
+                    </Link>
+                  </li>
+                  <li>
                     <Link
                       to="/collections/wild-thornberry"
                       className="transition hover:text-brand-red"

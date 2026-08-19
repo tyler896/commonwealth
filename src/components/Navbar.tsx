@@ -6,6 +6,7 @@ import { collections } from '../data/products'
 const links = [
   { to: '/', label: 'Home', accent: 'ink' as const, end: true },
   { to: '/shop', label: 'Shop', accent: 'ink' as const, end: true },
+  { to: '/about', label: 'About', accent: 'ink' as const, end: true },
   ...collections.map((c) => ({
     to: `/collections/${c.slug}`,
     label: c.id === 'wild-thornberry' ? 'Wild Thornberry' : 'Grape Sunshine',

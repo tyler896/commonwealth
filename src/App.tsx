@@ -14,6 +14,7 @@ import { ShopPage } from './pages/ShopPage'
 import { ProductPage } from './pages/ProductPage'
 import { CollectionPage } from './pages/CollectionPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { AboutPage } from './pages/AboutPage'
 
 export default function App() {
   const [unlocked, setUnlocked] = useState(
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="shop/:id" element={<ProductPage />} />
             <Route path="collections/:slug" element={<CollectionPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="about" element={<AboutPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
