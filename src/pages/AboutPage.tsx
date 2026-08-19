@@ -40,7 +40,7 @@ function Section({
 
 export function AboutPage() {
   return (
-    <div className="min-w-0 overflow-x-hidden bg-paper pb-16 md:pb-24">
+    <div className="min-w-0 overflow-x-hidden bg-paper">
       <section className="section-pad mx-auto max-w-7xl pt-24 md:pt-32">
         <p className="font-display text-[10px] tracking-[0.28em] uppercase text-leaf md:text-xs">
           About
