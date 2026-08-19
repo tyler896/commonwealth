@@ -12,6 +12,38 @@
 <% end %>
 
 <div class="card mb-6">
+  <div class="card-header">
+    <h5 class="card-title mb-0">Minimum order by tier</h5>
+  </div>
+  <div class="card-body">
+    <p class="text-sm text-zinc-600 mb-4">
+      Trade accounts in each tier must reach this cart subtotal before checkout.
+    </p>
+    <%= form_with url: spree.update_all_admin_wholesale_tier_settings_path, method: :put, local: true do %>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <% @tier_settings.each_with_index do |setting, index| %>
+          <%= hidden_field_tag "settings[#{index}][id]", setting.id %>
+          <div>
+            <label class="block text-xs uppercase tracking-wide text-zinc-500 mb-1">
+              <%= setting.tier_label %> — minimum order ($)
+            </label>
+            <%= number_field_tag "settings[#{index}][minimum_order_amount]",
+                  setting.minimum_order_amount,
+                  step: '0.01',
+                  min: 0,
+                  class: 'form-control',
+                  required: true %>
+          </div>
+        <% end %>
+      </div>
+      <div class="mt-4">
+        <%= button_tag 'Save minimums', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card mb-6">
   <div class="card-header flex items-center justify-between gap-4">
     <h5 class="card-title mb-0">Applications</h5>
     <%= form_with url: spree.admin_wholesale_applications_path, method: :get, local: true, class: 'flex gap-2 items-center' do %>

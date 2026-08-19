@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../cart/CartContext'
+import { useWholesaleMinimum } from '../auth/useWholesaleMinimum'
 
 export function CartDrawer() {
   const { isOpen, closeCart, lines, subtotal, setQuantity, removeItem, count } = useCart()
+  const { isB2B, tierLabel, minimum, meetsMinimum, remaining } = useWholesaleMinimum()
+  const canCheckout = meetsMinimum(subtotal)
 
   if (!isOpen) return null
 
@@ -94,13 +97,29 @@ export function CartDrawer() {
               <span className="text-sm text-muted">Subtotal</span>
               <span className="font-display text-xl text-leaf">${subtotal}</span>
             </div>
-            <Link
-              to="/checkout"
-              onClick={closeCart}
-              className="flex w-full items-center justify-center rounded-full bg-leaf py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-leaf-deep"
-            >
-              Checkout
-            </Link>
+            {isB2B && minimum > 0 && (
+              <p className={`mb-4 text-sm ${canCheckout ? 'text-muted' : 'text-brand-red'}`}>
+                {tierLabel} minimum order: ${minimum}
+                {!canCheckout && <> · add ${remaining(subtotal)} more</>}
+              </p>
+            )}
+            {canCheckout ? (
+              <Link
+                to="/checkout"
+                onClick={closeCart}
+                className="flex w-full items-center justify-center rounded-full bg-leaf py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-leaf-deep"
+              >
+                Checkout
+              </Link>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="flex w-full cursor-not-allowed items-center justify-center rounded-full bg-ink/20 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-ink/50"
+              >
+                Minimum not met
+              </button>
+            )}
           </div>
         )}
       </aside>

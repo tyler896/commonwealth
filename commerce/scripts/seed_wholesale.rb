@@ -52,4 +52,10 @@ tiers.each do |group_name, meta|
   puts "✓ #{group_name}: group=#{group.id} price_list=#{price_list.id} status=#{price_list.status}"
 end
 
+Spree::WholesaleTierSetting.ensure_defaults!(store)
+Spree::WholesaleTierSetting.for_store(store).each do |setting|
+  puts "✓ Min order #{setting.tier_label}: $#{setting.minimum_order_amount}"
+end
+
 puts "Done. Edit tier prices under Admin → Products → Price Lists."
+puts "Edit minimum orders under Admin → Wholesale Customers."

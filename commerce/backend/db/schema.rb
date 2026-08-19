@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_19_163000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -2432,6 +2432,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_163000) do
     t.index ["user_id"], name: "index_spree_wholesale_applications_on_user_id"
   end
 
+  create_table "spree_wholesale_tier_settings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "minimum_order_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.bigint "store_id", null: false
+    t.string "tier", null: false
+    t.datetime "updated_at", null: false
+    t.index ["store_id", "tier"], name: "index_spree_wholesale_tier_settings_on_store_id_and_tier", unique: true
+    t.index ["store_id"], name: "index_spree_wholesale_tier_settings_on_store_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
@@ -2450,4 +2460,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_163000) do
   add_foreign_key "spree_taxonomy_translations", "spree_taxonomies"
   add_foreign_key "spree_wholesale_applications", "spree_stores", column: "store_id"
   add_foreign_key "spree_wholesale_applications", "spree_users", column: "user_id"
+  add_foreign_key "spree_wholesale_tier_settings", "spree_stores", column: "store_id"
 end

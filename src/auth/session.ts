@@ -55,13 +55,16 @@ export function wholesaleTierFromUser(user: AuthUser | null | undefined): {
   isWholesale: boolean
   isDistro: boolean
   label: string | null
+  tier: 'wholesale' | 'distro' | null
 } {
   const names = (user?.customer_groups || []).map((g) => g.name.toLowerCase())
   const isDistro = names.includes('distro')
   const isWholesale = names.includes('wholesale')
+  const tier = isDistro ? 'distro' : isWholesale ? 'wholesale' : null
   return {
     isWholesale,
     isDistro,
+    tier,
     label: isDistro ? 'Distro' : isWholesale ? 'Wholesale' : null,
   }
 }

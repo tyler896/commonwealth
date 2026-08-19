@@ -167,3 +167,24 @@ export async function submitWholesaleApplication(payload: WholesaleApplicationPa
     body: payload,
   })
 }
+
+export type WholesaleTierInfo = {
+  tier: 'wholesale' | 'distro'
+  name: string
+  minimum_order_amount: number
+}
+
+export async function fetchWholesaleTiers(): Promise<WholesaleTierInfo[]> {
+  try {
+    const json = await commerceFetch<{
+      data: { tier: string; name: string; minimum_order_amount: string }[]
+    }>('/api/v3/store/wholesale_tiers')
+    return (json.data || []).map((row) => ({
+      tier: row.tier as 'wholesale' | 'distro',
+      name: row.name,
+      minimum_order_amount: Number(row.minimum_order_amount) || 0,
+    }))
+  } catch {
+    return []
+  }
+}

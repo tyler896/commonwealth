@@ -21,4 +21,5 @@ Use `npm run seed:product-fields` to create/sync definitions and copy values ont
 - Login: storefront `/wholesale/login` (JWT); approved accounts see tier prices automatically
 - Staff: Spree Admin sidebar **Wholesale Customers** — approve (assign Wholesale or Distro), reject, remove, change tier
 - Pricing: **Products → Price Lists** (`Wholesale` and `Distro` lists). Seed with `npm run seed:wholesale`
+- Minimum order ($): set per tier at the top of **Wholesale Customers**
 - Approving adds the customer to the matching Customer Group; that membership drives Price List resolution

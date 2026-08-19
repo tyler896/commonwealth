@@ -4,6 +4,7 @@ module Spree
   module Admin
     class WholesaleApplicationsController < ResourceController
       before_action :load_resource, only: %i[approve reject revoke change_tier edit update]
+      before_action :load_tier_settings, only: :index
 
       def approve
         tier = params[:tier].to_s
@@ -71,6 +72,10 @@ module Spree
 
       def location_after_save
         spree.admin_wholesale_applications_path
+      end
+
+      def load_tier_settings
+        @tier_settings = Spree::WholesaleTierSetting.for_store(current_store)
       end
 
       def permitted_resource_params
