@@ -41,3 +41,10 @@ Add more in admin **Settings → Metafields**. Details: [commerce/PRODUCT_FIELDS
 - Admin: Spree sidebar **Events** — title, date, location, summary, rich description, featured + gallery images
 - Storefront: `/events` (newest first), `/events/:slug`, home widget (1 / 2 / 3+ layout)
 
+## Wholesale / B2B
+
+- Apply: `/wholesale` · Login: `/wholesale/login`
+- Admin: Spree **Wholesale Customers** sidebar — approve into Wholesale or Distro; set per-tier minimum order ($)
+- Prices: **Products → Price Lists** (seed with `npm run seed:wholesale` from `commerce/`)
+- Details: [commerce/AGENTS.md](./commerce/AGENTS.md)
+
