@@ -15,6 +15,11 @@ Live deploy steps (SSH host, compose projects, rebuilds): see [../DEPLOY.md](../
 Structured product attributes (Lineage, Line, Pack, Brand, …): [PRODUCT_FIELDS.md](./PRODUCT_FIELDS.md).
 Use `npm run seed:product-fields` to create/sync definitions and copy values onto products.
 
+## Events
+
+- Manage in Spree Admin → **Events**
+- Public: `/events`, `/events/:slug`, home “In the field” widget
+
 ## Wholesale / B2B
 
 - Public apply form: storefront `/wholesale`

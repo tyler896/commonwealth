@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_19_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -2432,6 +2432,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_170000) do
     t.index ["user_id"], name: "index_spree_wholesale_applications_on_user_id"
   end
 
+  create_table "spree_events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "ends_at"
+    t.string "location"
+    t.integer "position", default: 0, null: false
+    t.boolean "published", default: true, null: false
+    t.string "slug", null: false
+    t.datetime "starts_at", null: false
+    t.bigint "store_id", null: false
+    t.text "summary"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["position"], name: "index_spree_events_on_position"
+    t.index ["store_id", "published", "starts_at"], name: "index_spree_events_on_store_id_and_published_and_starts_at"
+    t.index ["store_id", "slug"], name: "index_spree_events_on_store_id_and_slug", unique: true
+    t.index ["store_id"], name: "index_spree_events_on_store_id"
+  end
+
   create_table "spree_wholesale_tier_settings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.decimal "minimum_order_amount", precision: 10, scale: 2, default: "0.0", null: false
@@ -2458,6 +2476,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_170000) do
   add_foreign_key "spree_store_translations", "spree_stores"
   add_foreign_key "spree_taxon_translations", "spree_taxons"
   add_foreign_key "spree_taxonomy_translations", "spree_taxonomies"
+  add_foreign_key "spree_events", "spree_stores", column: "store_id"
   add_foreign_key "spree_wholesale_applications", "spree_stores", column: "store_id"
   add_foreign_key "spree_wholesale_applications", "spree_users", column: "user_id"
   add_foreign_key "spree_wholesale_tier_settings", "spree_stores", column: "store_id"

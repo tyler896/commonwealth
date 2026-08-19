@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     )
 
     namespace :admin do
+      resources :events
       resources :wholesale_applications, only: %i[index edit update] do
         member do
           put :approve
@@ -31,6 +32,7 @@ Rails.application.routes.draw do
     namespace :api, defaults: { format: 'json' } do
       namespace :v3 do
         namespace :store do
+          resources :events, only: %i[index show]
           resources :wholesale_applications, only: %i[create]
           resources :wholesale_tiers, only: %i[index]
         end

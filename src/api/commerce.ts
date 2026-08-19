@@ -188,3 +188,55 @@ export async function fetchWholesaleTiers(): Promise<WholesaleTierInfo[]> {
     return []
   }
 }
+
+export type StoreEvent = {
+  id: string
+  title: string
+  slug: string
+  summary: string | null
+  location: string | null
+  starts_at: string
+  ends_at: string | null
+  description: string | null
+  featured_image_url: string | null
+  gallery_image_urls: string[]
+}
+
+function mapEvent(raw: Record<string, unknown>): StoreEvent {
+  return {
+    id: String(raw.id ?? raw.slug ?? ''),
+    title: String(raw.title ?? ''),
+    slug: String(raw.slug ?? ''),
+    summary: (raw.summary as string) || null,
+    location: (raw.location as string) || null,
+    starts_at: String(raw.starts_at ?? ''),
+    ends_at: (raw.ends_at as string) || null,
+    description: (raw.description as string) || null,
+    featured_image_url: (raw.featured_image_url as string) || null,
+    gallery_image_urls: Array.isArray(raw.gallery_image_urls)
+      ? (raw.gallery_image_urls as string[])
+      : [],
+  }
+}
+
+export async function fetchEvents(limit = 20): Promise<StoreEvent[]> {
+  try {
+    const json = await commerceFetch<{ data: Record<string, unknown>[] }>(
+      `/api/v3/store/events?limit=${limit}`,
+    )
+    return (json.data || []).map(mapEvent)
+  } catch {
+    return []
+  }
+}
+
+export async function fetchEventBySlug(slug: string): Promise<StoreEvent | null> {
+  try {
+    const json = await commerceFetch<Record<string, unknown>>(
+      `/api/v3/store/events/${encodeURIComponent(slug)}`,
+    )
+    return mapEvent(json)
+  } catch {
+    return null
+  }
+}

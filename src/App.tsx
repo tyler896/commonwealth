@@ -18,6 +18,8 @@ import { CheckoutPage } from './pages/CheckoutPage'
 import { AboutPage } from './pages/AboutPage'
 import { WholesaleApplyPage } from './pages/WholesaleApplyPage'
 import { WholesaleLoginPage } from './pages/WholesaleLoginPage'
+import { EventsPage } from './pages/EventsPage'
+import { EventDetailPage } from './pages/EventDetailPage'
 
 export default function App() {
   const [unlocked, setUnlocked] = useState(
@@ -61,6 +63,8 @@ export default function App() {
               <Route path="collections/:slug" element={<CollectionPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="about" element={<AboutPage />} />
+              <Route path="events" element={<EventsPage />} />
+              <Route path="events/:slug" element={<EventDetailPage />} />
               <Route path="wholesale" element={<WholesaleApplyPage />} />
               <Route path="wholesale/login" element={<WholesaleLoginPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />

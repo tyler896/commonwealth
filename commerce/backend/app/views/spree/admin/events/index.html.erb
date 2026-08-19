@@ -1,0 +1,53 @@
+<% content_for :page_title do %>
+  Events
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to 'New event', spree.new_admin_event_path, class: 'btn btn-primary' %>
+<% end %>
+
+<div class="card">
+  <div class="card-body p-0 overflow-x-auto">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Location</th>
+          <th>Published</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @events.any? %>
+          <% @events.each do |event| %>
+            <tr>
+              <td class="w-16">
+                <% if event.featured_image.attached? %>
+                  <%= image_tag event.featured_image, class: 'h-12 w-12 rounded object-cover' %>
+                <% end %>
+              </td>
+              <td class="font-medium"><%= event.title %></td>
+              <td class="text-sm"><%= l(event.starts_at, format: :long) rescue event.starts_at %></td>
+              <td><%= event.location.presence || '—' %></td>
+              <td>
+                <span class="badge <%= event.published? ? 'badge-success' : 'badge-secondary' %>">
+                  <%= event.published? ? 'Yes' : 'Draft' %>
+                </span>
+              </td>
+              <td class="text-right space-x-2">
+                <%= link_to 'Edit', spree.edit_admin_event_path(event), class: 'btn btn-sm btn-light' %>
+                <%= button_to 'Delete', spree.admin_event_path(event), method: :delete, class: 'btn btn-sm btn-light', data: { turbo_confirm: 'Delete this event?' } %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="6" class="py-10 text-center text-zinc-500">No events yet. Create your first one.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

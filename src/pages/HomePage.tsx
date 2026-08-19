@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { fetchProducts } from '../api/commerce'
+import { fetchEvents, fetchProducts } from '../api/commerce'
 import type { Product } from '../data/products'
+import type { StoreEvent } from '../api/commerce'
 import { ProductCarousel } from '../components/ProductCarousel'
+import { EventsHomeWidget } from '../components/EventsHomeWidget'
 
 const TRUST = [
   { label: 'Feminized genetics', detail: 'Stable crosses for the garden' },
@@ -13,6 +15,7 @@ const TRUST = [
 export function HomePage() {
   const [featured, setFeatured] = useState<Product[]>([])
   const [loadingFeatured, setLoadingFeatured] = useState(true)
+  const [events, setEvents] = useState<StoreEvent[]>([])
 
   useEffect(() => {
     let alive = true
@@ -28,6 +31,9 @@ export function HomePage() {
       .finally(() => {
         if (alive) setLoadingFeatured(false)
       })
+    fetchEvents(3).then((items) => {
+      if (alive) setEvents(items)
+    })
     return () => {
       alive = false
     }
@@ -112,6 +118,8 @@ export function HomePage() {
           </div>
         )}
       </section>
+
+      <EventsHomeWidget events={events} />
 
       {/* Brand story teaser */}
       <section className="border-y border-line bg-paper-soft">
