@@ -20,6 +20,7 @@ import { WholesaleApplyPage } from './pages/WholesaleApplyPage'
 import { WholesaleLoginPage } from './pages/WholesaleLoginPage'
 import { EventsPage } from './pages/EventsPage'
 import { EventDetailPage } from './pages/EventDetailPage'
+import { FaqPage } from './pages/FaqPage'
 
 export default function App() {
   const [unlocked, setUnlocked] = useState(
@@ -63,6 +64,7 @@ export default function App() {
               <Route path="collections/:slug" element={<CollectionPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="about" element={<AboutPage />} />
+              <Route path="faq" element={<FaqPage />} />
               <Route path="events" element={<EventsPage />} />
               <Route path="events/:slug" element={<EventDetailPage />} />
               <Route path="wholesale" element={<WholesaleApplyPage />} />

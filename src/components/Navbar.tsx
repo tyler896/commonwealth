@@ -8,6 +8,7 @@ const links = [
   { to: '/', label: 'Home', accent: 'ink' as const, end: true },
   { to: '/shop', label: 'Shop', accent: 'ink' as const, end: true },
   { to: '/about', label: 'About', accent: 'ink' as const, end: true },
+  { to: '/faq', label: 'FAQ', accent: 'ink' as const, end: true },
   { to: '/events', label: 'Events', accent: 'ink' as const, end: true },
   { to: '/wholesale', label: 'Wholesale', accent: 'ink' as const, end: true },
   ...collections.map((c) => ({
