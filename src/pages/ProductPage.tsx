@@ -1,23 +1,34 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getCollection, type Product } from '../data/products'
-import { fetchProductBySlug, fetchProducts } from '../api/commerce'
+import {
+  addWishlistItem,
+  ensureDefaultWishlist,
+  fetchProductBySlug,
+  fetchProducts,
+} from '../api/commerce'
 import { ProductCarousel } from '../components/ProductCarousel'
 import { ProductJsonLd } from '../components/ProductJsonLd'
 import { MetafieldIcon } from '../components/MetafieldIcon'
+import { useAuth } from '../auth/AuthContext'
 
 export function ProductPage() {
   const { id } = useParams()
+  const { user } = useAuth()
   const [product, setProduct] = useState<Product | null>(null)
   const [related, setRelated] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [missing, setMissing] = useState(false)
+  const [wishStatus, setWishStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
+  const [wishError, setWishError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!id) return
     let alive = true
     setLoading(true)
     setMissing(false)
+    setWishStatus('idle')
+    setWishError(null)
 
     Promise.all([fetchProductBySlug(id), fetchProducts()])
       .then(([item, all]) => {
@@ -66,6 +77,24 @@ export function ProductPage() {
   const collection = getCollection(product.line)
   const isRed = collection?.accent === 'red'
   const metafields = product.attributes.filter((a) => a.value.trim())
+
+  const saveToWishlist = async () => {
+    if (!product.variantId) {
+      setWishError('This product is not available to save yet.')
+      setWishStatus('error')
+      return
+    }
+    setWishStatus('saving')
+    setWishError(null)
+    try {
+      const list = await ensureDefaultWishlist()
+      await addWishlistItem(list.id, product.variantId)
+      setWishStatus('saved')
+    } catch (err) {
+      setWishStatus('error')
+      setWishError(err instanceof Error ? err.message : 'Could not save to wishlist')
+    }
+  }
 
   return (
     <div className="section-pad mx-auto max-w-7xl pb-16 pt-24 md:pb-24 md:pt-36">
@@ -122,15 +151,39 @@ export function ProductPage() {
               </p>
               <p className="mt-1 text-xs text-muted">{product.packSize} feminized seeds</p>
             </div>
-            <span
-              className={`rounded-full border px-6 py-3 font-display text-[10px] tracking-[0.18em] uppercase md:px-8 md:py-3.5 md:text-xs md:tracking-[0.2em] ${
-                isRed
-                  ? 'border-brand-red/40 bg-brand-red/10 text-brand-red-deep'
-                  : 'border-brand-blue/40 bg-brand-blue/10 text-brand-blue-deep'
-              }`}
-            >
-              Coming Soon
-            </span>
+            <div className="flex flex-col items-end gap-2">
+              <span
+                className={`rounded-full border px-6 py-3 font-display text-[10px] tracking-[0.18em] uppercase md:px-8 md:py-3.5 md:text-xs md:tracking-[0.2em] ${
+                  isRed
+                    ? 'border-brand-red/40 bg-brand-red/10 text-brand-red-deep'
+                    : 'border-brand-blue/40 bg-brand-blue/10 text-brand-blue-deep'
+                }`}
+              >
+                Coming Soon
+              </span>
+              {user ? (
+                <button
+                  type="button"
+                  onClick={saveToWishlist}
+                  disabled={wishStatus === 'saving' || wishStatus === 'saved'}
+                  className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/55 transition hover:text-ink disabled:opacity-70"
+                >
+                  {wishStatus === 'saved'
+                    ? 'Saved to wishlist'
+                    : wishStatus === 'saving'
+                      ? 'Saving…'
+                      : 'Save to wishlist'}
+                </button>
+              ) : (
+                <Link
+                  to="/account/login"
+                  className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/55 transition hover:text-ink"
+                >
+                  Sign in to save
+                </Link>
+              )}
+              {wishError && <p className="max-w-[14rem] text-right text-xs text-brand-red">{wishError}</p>}
+            </div>
           </div>
 
           {metafields.length > 0 && (

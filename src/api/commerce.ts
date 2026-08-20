@@ -136,6 +136,29 @@ export async function loginCustomer(email: string, password: string): Promise<Au
   }
 }
 
+export async function registerCustomer(payload: {
+  email: string
+  password: string
+  password_confirmation?: string
+  first_name?: string
+  last_name?: string
+}): Promise<AuthSession> {
+  const json = await commerceFetch<{
+    token: string
+    refresh_token: string
+    user: AuthApiUser
+  }>('/api/v3/store/customers', {
+    method: 'POST',
+    body: payload,
+  })
+
+  return {
+    token: json.token,
+    refreshToken: json.refresh_token,
+    user: normalizeUser(json.user),
+  }
+}
+
 export async function fetchCurrentCustomer(token: string): Promise<AuthUser> {
   const json = await commerceFetch<AuthApiUser>('/api/v3/store/account', {
     token,
@@ -144,6 +167,163 @@ export async function fetchCurrentCustomer(token: string): Promise<AuthUser> {
     return commerceFetch<AuthApiUser>('/api/v3/store/customers/me', { token })
   })
   return normalizeUser(json)
+}
+
+export type CustomerOrder = {
+  id: string
+  number: string
+  email: string
+  currency: string
+  state: string
+  payment_state?: string | null
+  completed_at: string | null
+  display_total: string | null
+  total_quantity?: number
+  item_count?: number
+}
+
+export type CustomerAddress = {
+  id: string
+  first_name: string | null
+  last_name: string | null
+  full_name: string
+  address1: string | null
+  address2: string | null
+  city: string | null
+  postal_code: string | null
+  phone: string | null
+  company: string | null
+  country_iso: string
+  country_name?: string
+  state_abbr: string | null
+  state_name: string | null
+  is_default_billing: boolean
+  is_default_shipping: boolean
+}
+
+export type AddressInput = {
+  first_name: string
+  last_name: string
+  address1: string
+  address2?: string
+  city: string
+  postal_code: string
+  country_iso: string
+  phone?: string
+  company?: string
+  state_abbr?: string
+  state_name?: string
+  is_default_billing?: boolean
+  is_default_shipping?: boolean
+}
+
+export type WishlistItem = {
+  id: string
+  variant_id: string
+  product_id: string
+  wishlist_id: string
+  quantity: number
+  variant?: {
+    id: string
+    sku: string | null
+    options_text?: string
+    thumbnail_url?: string | null
+    product?: { name?: string; slug?: string }
+  }
+}
+
+export type Wishlist = {
+  id: string
+  name: string
+  token: string
+  is_default: boolean
+  is_private: boolean
+  items: WishlistItem[]
+}
+
+export async function fetchCustomerOrders(): Promise<CustomerOrder[]> {
+  try {
+    const json = await commerceFetch<{ data: CustomerOrder[] }>(
+      '/api/v3/store/customers/me/orders?limit=50&sort=-completed_at',
+      { withAuth: true },
+    )
+    return json.data || []
+  } catch {
+    return []
+  }
+}
+
+export async function fetchCustomerAddresses(): Promise<CustomerAddress[]> {
+  try {
+    const json = await commerceFetch<{ data: CustomerAddress[] }>(
+      '/api/v3/store/customers/me/addresses?limit=50',
+      { withAuth: true },
+    )
+    return json.data || []
+  } catch {
+    return []
+  }
+}
+
+export async function createCustomerAddress(input: AddressInput): Promise<CustomerAddress> {
+  return commerceFetch<CustomerAddress>('/api/v3/store/customers/me/addresses', {
+    method: 'POST',
+    body: input,
+    withAuth: true,
+  })
+}
+
+export async function deleteCustomerAddress(id: string): Promise<void> {
+  await commerceFetch<void>(`/api/v3/store/customers/me/addresses/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    withAuth: true,
+  })
+}
+
+export async function fetchWishlists(): Promise<Wishlist[]> {
+  try {
+    const json = await commerceFetch<{ data: Wishlist[] }>('/api/v3/store/wishlists?limit=20', {
+      withAuth: true,
+    })
+    return (json.data || []).map((w) => ({
+      ...w,
+      items: w.items || [],
+    }))
+  } catch {
+    return []
+  }
+}
+
+export async function ensureDefaultWishlist(): Promise<Wishlist> {
+  const list = await fetchWishlists()
+  const existing = list.find((w) => w.is_default) || list[0]
+  if (existing) return existing
+  return commerceFetch<Wishlist>('/api/v3/store/wishlists', {
+    method: 'POST',
+    body: { name: 'Wishlist', is_default: true, is_private: true },
+    withAuth: true,
+  })
+}
+
+export async function addWishlistItem(wishlistId: string, variantId: string, quantity = 1) {
+  return commerceFetch<WishlistItem>(
+    `/api/v3/store/wishlists/${encodeURIComponent(wishlistId)}/items`,
+    {
+      method: 'POST',
+      body: { variant_id: variantId, quantity },
+      withAuth: true,
+    },
+  )
+}
+
+export async function removeWishlistItem(wishlistId: string, itemId: string): Promise<void> {
+  await commerceFetch<void>(
+    `/api/v3/store/wishlists/${encodeURIComponent(wishlistId)}/items/${encodeURIComponent(itemId)}`,
+    {
+      method: 'DELETE',
+      withAuth: true,
+    },
+  )
 }
 
 export type WholesaleApplicationPayload = {

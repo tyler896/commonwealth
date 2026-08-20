@@ -11,6 +11,7 @@ const links = [
   { to: '/faq', label: 'FAQ', accent: 'ink' as const, end: true },
   { to: '/events', label: 'Events', accent: 'ink' as const, end: true },
   { to: '/wholesale', label: 'Wholesale', accent: 'ink' as const, end: true },
+  { to: '/account', label: 'Account', accent: 'ink' as const, end: false },
   ...collections.map((c) => ({
     to: `/collections/${c.slug}`,
     label: c.id === 'wild-thornberry' ? 'Wild Thornberry' : 'Grape Sunshine',
@@ -99,40 +100,25 @@ export function Navbar() {
           <span className="sr-only">Commonwealth Seed Co</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:gap-8 md:flex">
+        <nav className="hidden items-center gap-5 lg:gap-7 md:flex">
           {links.map((link) => (
             <NavLink
               key={link.to}
-              to={link.to}
+              to={link.to === '/account' && !user ? '/account/login' : link.to}
               end={link.end}
               className={({ isActive }) => linkClass(link.to, link.accent, isActive)}
             >
-              {link.label}
+              {link.to === '/account' && tierLabel ? tierLabel : link.label}
             </NavLink>
           ))}
-          {user ? (
-            <div className="flex items-center gap-3">
-              <Link
-                to="/wholesale/login"
-                className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/70 transition hover:text-ink"
-              >
-                {tierLabel || 'Account'}
-              </Link>
-              <button
-                type="button"
-                onClick={logout}
-                className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/50 transition hover:text-ink"
-              >
-                Sign out
-              </button>
-            </div>
-          ) : (
-            <Link
-              to="/wholesale/login"
-              className="font-display text-[10px] tracking-[0.16em] uppercase text-ink/70 transition hover:text-ink"
+          {user && (
+            <button
+              type="button"
+              onClick={logout}
+              className="font-display text-xs tracking-[0.16em] uppercase text-ink/50 transition hover:text-ink lg:text-sm lg:tracking-[0.18em]"
             >
-              Trade login
-            </Link>
+              Sign out
+            </button>
           )}
           <button
             type="button"
@@ -189,21 +175,14 @@ export function Navbar() {
             {links.map((link) => (
               <NavLink
                 key={link.to}
-                to={link.to}
+                to={link.to === '/account' && !user ? '/account/login' : link.to}
                 end={link.end}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) => mobileLinkClass(link.to, link.accent, isActive)}
               >
-                {link.label}
+                {link.to === '/account' && tierLabel ? `${tierLabel} account` : link.label}
               </NavLink>
             ))}
-            <NavLink
-              to="/wholesale/login"
-              onClick={() => setOpen(false)}
-              className={({ isActive }) => mobileLinkClass('/wholesale/login', 'ink', isActive)}
-            >
-              {user ? (tierLabel ? `${tierLabel} account` : 'Trade account') : 'Trade login'}
-            </NavLink>
             {user && (
               <button
                 type="button"

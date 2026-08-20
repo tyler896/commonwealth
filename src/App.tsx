@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { CartProvider } from './cart/CartContext'
 import { AuthProvider } from './auth/AuthContext'
+import { RequireAuth } from './auth/RequireAuth'
 import { Layout } from './components/Layout'
 import {
   STOREFRONT_ENV_UNLOCKED,
@@ -21,6 +22,13 @@ import { WholesaleLoginPage } from './pages/WholesaleLoginPage'
 import { EventsPage } from './pages/EventsPage'
 import { EventDetailPage } from './pages/EventDetailPage'
 import { FaqPage } from './pages/FaqPage'
+import { AccountLayout } from './pages/account/AccountLayout'
+import { AccountLoginPage } from './pages/account/AccountLoginPage'
+import { AccountRegisterPage } from './pages/account/AccountRegisterPage'
+import { AccountOverviewPage } from './pages/account/AccountOverviewPage'
+import { AccountOrdersPage } from './pages/account/AccountOrdersPage'
+import { AccountAddressesPage } from './pages/account/AccountAddressesPage'
+import { AccountWishlistPage } from './pages/account/AccountWishlistPage'
 
 export default function App() {
   const [unlocked, setUnlocked] = useState(
@@ -69,6 +77,16 @@ export default function App() {
               <Route path="events/:slug" element={<EventDetailPage />} />
               <Route path="wholesale" element={<WholesaleApplyPage />} />
               <Route path="wholesale/login" element={<WholesaleLoginPage />} />
+              <Route path="account/login" element={<AccountLoginPage />} />
+              <Route path="account/register" element={<AccountRegisterPage />} />
+              <Route path="account" element={<RequireAuth />}>
+                <Route element={<AccountLayout />}>
+                  <Route index element={<AccountOverviewPage />} />
+                  <Route path="orders" element={<AccountOrdersPage />} />
+                  <Route path="addresses" element={<AccountAddressesPage />} />
+                  <Route path="wishlist" element={<AccountWishlistPage />} />
+                </Route>
+              </Route>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

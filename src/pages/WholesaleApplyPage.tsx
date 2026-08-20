@@ -66,7 +66,7 @@ export function WholesaleApplyPage() {
         <p className="mt-4 text-sm leading-relaxed text-muted md:text-base">
           Apply for a Commonwealth trade account. After approval, staff assign Wholesale or Distro
           pricing. Already approved?{' '}
-          <Link to="/wholesale/login" className="text-leaf underline-offset-2 hover:underline">
+          <Link to="/account/login" className="text-leaf underline-offset-2 hover:underline">
             Sign in
           </Link>
           .
@@ -80,7 +80,7 @@ export function WholesaleApplyPage() {
               sign in anytime — tier pricing unlocks after approval.
             </p>
             <Link
-              to="/wholesale/login"
+              to="/account/login"
               className="mt-6 inline-flex rounded-full bg-brand-red px-6 py-3 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep"
             >
               Go to login

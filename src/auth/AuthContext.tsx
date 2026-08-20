@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { loginCustomer, fetchCurrentCustomer } from '../api/commerce'
+import { loginCustomer, registerCustomer, fetchCurrentCustomer } from '../api/commerce'
 import {
   clearAuthSession,
   loadAuthSession,
@@ -24,6 +24,13 @@ type AuthContextValue = {
   tierLabel: string | null
   isB2B: boolean
   login: (email: string, password: string) => Promise<void>
+  register: (payload: {
+    email: string
+    password: string
+    password_confirmation?: string
+    first_name?: string
+    last_name?: string
+  }) => Promise<void>
   logout: () => void
   refreshProfile: () => Promise<void>
 }
@@ -44,6 +51,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     saveAuthSession(next)
     setSession(next)
   }, [])
+
+  const register = useCallback(
+    async (payload: {
+      email: string
+      password: string
+      password_confirmation?: string
+      first_name?: string
+      last_name?: string
+    }) => {
+      const next = await registerCustomer(payload)
+      saveAuthSession(next)
+      setSession(next)
+    },
+    [],
+  )
 
   const logout = useCallback(() => {
     clearAuthSession()
@@ -70,10 +92,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       tierLabel: tiers.label,
       isB2B: Boolean(tiers.label),
       login,
+      register,
       logout,
       refreshProfile,
     }),
-    [session, ready, tiers.label, login, logout, refreshProfile],
+    [session, ready, tiers.label, login, register, logout, refreshProfile],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
