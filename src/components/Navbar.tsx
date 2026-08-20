@@ -11,7 +11,6 @@ const links = [
   { to: '/faq', label: 'FAQ', accent: 'ink' as const, end: true },
   { to: '/events', label: 'Events', accent: 'ink' as const, end: true },
   { to: '/wholesale', label: 'Wholesale', accent: 'ink' as const, end: true },
-  { to: '/account', label: 'Account', accent: 'ink' as const, end: false },
   ...collections.map((c) => ({
     to: `/collections/${c.slug}`,
     label: c.id === 'wild-thornberry' ? 'Wild Thornberry' : 'Grape Sunshine',
@@ -45,6 +44,8 @@ export function Navbar() {
   const { count, openCart } = useCart()
   const { user, tierLabel, logout } = useAuth()
   const { pathname } = useLocation()
+  const accountTo = user ? '/account' : '/account/login'
+  const accountLabel = tierLabel || 'Account'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -86,10 +87,10 @@ export function Navbar() {
         scrolled || open ? 'bg-paper/95 backdrop-blur-md' : 'bg-paper'
       }`}
     >
-      <div className="section-pad mx-auto flex h-14 max-w-7xl items-center justify-between md:h-20">
+      <div className="section-pad mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 md:h-20">
         <Link
           to="/"
-          className="relative z-10 flex min-w-0 items-center gap-3"
+          className="relative z-10 flex min-w-0 shrink-0 items-center gap-3"
           onClick={() => setOpen(false)}
         >
           <img
@@ -100,22 +101,41 @@ export function Navbar() {
           <span className="sr-only">Commonwealth Seed Co</span>
         </Link>
 
-        <nav className="hidden items-center gap-5 lg:gap-7 md:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-4 overflow-x-auto lg:gap-6 md:flex">
           {links.map((link) => (
             <NavLink
               key={link.to}
-              to={link.to === '/account' && !user ? '/account/login' : link.to}
+              to={link.to}
               end={link.end}
-              className={({ isActive }) => linkClass(link.to, link.accent, isActive)}
+              className={({ isActive }) =>
+                `shrink-0 ${linkClass(link.to, link.accent, isActive)}`
+              }
             >
-              {link.to === '/account' && tierLabel ? tierLabel : link.label}
+              {link.label}
             </NavLink>
           ))}
+        </nav>
+
+        <div className="relative z-10 flex shrink-0 items-center gap-2 sm:gap-3">
+          <Link
+            to={accountTo}
+            onClick={() => setOpen(false)}
+            className={`font-display text-[10px] tracking-[0.14em] uppercase transition sm:text-xs sm:tracking-[0.16em] ${
+              pathname.startsWith('/account')
+                ? 'text-ink'
+                : 'text-ink/70 hover:text-ink'
+            }`}
+          >
+            {accountLabel}
+          </Link>
           {user && (
             <button
               type="button"
-              onClick={logout}
-              className="font-display text-xs tracking-[0.16em] uppercase text-ink/50 transition hover:text-ink lg:text-sm lg:tracking-[0.18em]"
+              onClick={() => {
+                logout()
+                setOpen(false)
+              }}
+              className="hidden font-display text-[10px] tracking-[0.14em] uppercase text-ink/45 transition hover:text-ink sm:inline sm:text-xs sm:tracking-[0.16em]"
             >
               Sign out
             </button>
@@ -124,34 +144,18 @@ export function Navbar() {
             type="button"
             onClick={openCart}
             aria-label={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
-            className="relative flex items-center justify-center rounded-full bg-brand-red px-4 py-2 text-white transition hover:bg-brand-red-deep"
+            className="relative flex items-center justify-center rounded-full bg-brand-red px-3 py-1.5 text-white transition hover:bg-brand-red-deep md:px-4 md:py-2"
           >
-            <CartIcon className="h-4 w-4" />
+            <CartIcon className="h-3.5 w-3.5 md:h-4 md:w-4" />
             {count > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-white">
-                {count}
-              </span>
-            )}
-          </button>
-        </nav>
-
-        <div className="relative z-10 flex items-center gap-2 md:hidden">
-          <button
-            type="button"
-            onClick={openCart}
-            aria-label={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
-            className="relative flex items-center justify-center rounded-full bg-brand-red px-3 py-1.5 text-white"
-          >
-            <CartIcon className="h-3.5 w-3.5" />
-            {count > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[9px] font-bold text-white">
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[9px] font-bold text-white md:-right-2 md:-top-2 md:h-5 md:min-w-5 md:text-[10px]">
                 {count}
               </span>
             )}
           </button>
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center"
+            className="flex h-10 w-10 items-center justify-center md:hidden"
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -175,14 +179,21 @@ export function Navbar() {
             {links.map((link) => (
               <NavLink
                 key={link.to}
-                to={link.to === '/account' && !user ? '/account/login' : link.to}
+                to={link.to}
                 end={link.end}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) => mobileLinkClass(link.to, link.accent, isActive)}
               >
-                {link.to === '/account' && tierLabel ? `${tierLabel} account` : link.label}
+                {link.label}
               </NavLink>
             ))}
+            <NavLink
+              to={accountTo}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => mobileLinkClass('/account', 'ink', isActive)}
+            >
+              {accountLabel}
+            </NavLink>
             {user && (
               <button
                 type="button"
