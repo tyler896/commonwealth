@@ -1,10 +1,19 @@
 # Isolated Commonwealth storefront (lander by default).
 # Project name: commonwealth — volumes/networks stay namespaced.
+# Optional build-args via /home/deploy/commonwealth/.env:
+#   VITE_STOREFRONT_UNLOCKED=true
+#   VITE_COMMERCE_API_URL=
+#   VITE_COMMERCE_PUBLISHABLE_KEY=pk_...
 name: commonwealth
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_STOREFRONT_UNLOCKED: ${VITE_STOREFRONT_UNLOCKED:-false}
+        VITE_COMMERCE_API_URL: ${VITE_COMMERCE_API_URL:-}
+        VITE_COMMERCE_PUBLISHABLE_KEY: ${VITE_COMMERCE_PUBLISHABLE_KEY:-}
     restart: unless-stopped
     ports:
       - "127.0.0.1:3023:80"

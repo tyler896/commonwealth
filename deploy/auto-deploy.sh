@@ -54,7 +54,9 @@ fi
 
 if [[ "$rebuild_web" -eq 1 ]]; then
   logger -t "$LOG_TAG" "rebuilding storefront image"
-  docker compose -f docker-compose.prod.yml build web
+  # --no-cache: Vite hashes change; cached layers have left production on stale JS before.
+  # Optional unlock / API key: set in /home/deploy/commonwealth/.env (compose reads it).
+  docker compose -f docker-compose.prod.yml build --no-cache web
   docker compose -f docker-compose.prod.yml up -d web
 fi
 
