@@ -156,8 +156,26 @@ export function Footer() {
           </div>
 
           <div className="mt-12 flex flex-col gap-4 border-t border-brand-blue-line pt-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-            <p className="min-w-0">© {new Date().getFullYear()} Commonwealth Seed Co. All rights reserved.</p>
-            <p className="min-w-0">21+ only. Commonwealth genetics exclusively.</p>
+            <p className="min-w-0">
+              © {new Date().getFullYear()} Commonwealth Seed Co. All rights reserved.
+            </p>
+            <nav
+              aria-label="Legal"
+              className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 sm:justify-end"
+            >
+              <Link to="/terms" className="transition hover:text-brand-red">
+                Terms
+              </Link>
+              <Link to="/privacy" className="transition hover:text-brand-red">
+                Privacy
+              </Link>
+              <Link to="/shipping-policy" className="transition hover:text-brand-red">
+                Shipping Policy
+              </Link>
+              <Link to="/age-policy" className="transition hover:text-brand-red">
+                Age Policy
+              </Link>
+            </nav>
           </div>
         </div>
       </section>

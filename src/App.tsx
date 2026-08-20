@@ -22,6 +22,12 @@ import { WholesaleLoginPage } from './pages/WholesaleLoginPage'
 import { EventsPage } from './pages/EventsPage'
 import { EventDetailPage } from './pages/EventDetailPage'
 import { FaqPage } from './pages/FaqPage'
+import {
+  AgePolicyPage,
+  PrivacyPage,
+  ShippingPolicyPage,
+  TermsPage,
+} from './pages/LegalPages'
 import { AccountLayout } from './pages/account/AccountLayout'
 import { AccountLoginPage } from './pages/account/AccountLoginPage'
 import { AccountRegisterPage } from './pages/account/AccountRegisterPage'
@@ -73,6 +79,10 @@ export default function App() {
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="about" element={<AboutPage />} />
               <Route path="faq" element={<FaqPage />} />
+              <Route path="terms" element={<TermsPage />} />
+              <Route path="privacy" element={<PrivacyPage />} />
+              <Route path="shipping-policy" element={<ShippingPolicyPage />} />
+              <Route path="age-policy" element={<AgePolicyPage />} />
               <Route path="events" element={<EventsPage />} />
               <Route path="events/:slug" element={<EventDetailPage />} />
               <Route path="wholesale" element={<WholesaleApplyPage />} />
