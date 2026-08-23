@@ -114,12 +114,6 @@ export function LanderPage() {
           </form>
         )}
       </section>
-
-      <img
-        className="cw-lander__side"
-        src="/lander/CWsocials-01.png"
-        alt="Commonwealth Seeds Co garden visual"
-      />
     </main>
   )
 }
