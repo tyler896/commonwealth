@@ -5,8 +5,8 @@
 
   min-height: 100vh;
   min-height: 100dvh;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   font-family: 'Fredoka', system-ui, sans-serif;
   color: var(--cream);
   background: var(--dead-blue);
@@ -22,15 +22,6 @@
   align-items: center;
   justify-content: center;
   padding: 4vh 6vw;
-}
-
-.cw-lander__side {
-  width: auto;
-  height: 100vh;
-  height: 100dvh;
-  max-width: 50vw;
-  object-fit: contain;
-  display: block;
 }
 
 .cw-lander__logo {
@@ -204,41 +195,10 @@
   border-color: var(--cream);
 }
 
-@media (min-width: 701px) and (max-width: 1024px) {
-  .cw-lander {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .cw-lander__content {
-    min-height: 70vh;
-    padding: 5vh 7vw 4rem;
-  }
-
-  .cw-lander__side {
-    width: 100%;
-    max-width: none;
-    height: auto;
-    object-fit: contain;
-  }
-}
-
 @media (max-width: 700px) {
-  .cw-lander {
-    display: flex;
-    flex-direction: column;
-  }
-
   .cw-lander__content {
     min-height: auto;
     padding: 4vh 6vw 3rem;
-  }
-
-  .cw-lander__side {
-    width: 100%;
-    max-width: none;
-    height: auto;
-    object-fit: contain;
   }
 
   .cw-lander__form button {

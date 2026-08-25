@@ -40,10 +40,23 @@ export function ProductCarousel({
   useEffect(() => {
     const el = scrollerRef.current
     if (!el) return
-    update()
+
+    const reset = () => {
+      el.scrollLeft = 0
+      update()
+    }
+
+    reset()
+    // Snap can run after paint and eat the left inset — re-assert start.
+    const t0 = requestAnimationFrame(() => {
+      reset()
+      requestAnimationFrame(reset)
+    })
+
     el.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
     return () => {
+      cancelAnimationFrame(t0)
       el.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
     }
@@ -53,7 +66,7 @@ export function ProductCarousel({
     const el = scrollerRef.current
     if (!el) return
     const card = el.querySelector<HTMLElement>('[data-carousel-card]')
-    const amount = card ? card.offsetWidth + 16 : el.clientWidth * 0.8
+    const amount = card ? card.offsetWidth + 12 : el.clientWidth * 0.8
     el.scrollBy({ left: dir * amount, behavior: 'smooth' })
   }
 
@@ -61,14 +74,15 @@ export function ProductCarousel({
     const el = scrollerRef.current
     if (!el) return
     const card = el.querySelectorAll<HTMLElement>('[data-carousel-card]')[i]
-    card?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    if (!card) return
+    card.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' })
   }
 
   if (!products.length) return null
 
   return (
-    <div className="relative">
-      <div className="mb-3 flex items-center justify-between gap-3 px-1 md:hidden">
+    <div className="relative min-w-0">
+      <div className="section-pad mb-3 flex items-center justify-between gap-3 md:hidden">
         <p className="font-display text-[10px] tracking-[0.22em] uppercase text-muted">
           Swipe · {products.length} {label.toLowerCase()}
         </p>
@@ -96,13 +110,13 @@ export function ProductCarousel({
 
       <div
         ref={scrollerRef}
-        className="product-carousel -mx-[clamp(1.25rem,4vw,4rem)] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,4rem)] pb-3 pt-1 md:mx-0 md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 xl:grid-cols-4"
+        className="product-carousel flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
       >
         {products.map((product) => (
           <div
             key={product.catalogId}
             data-carousel-card
-            className="w-[78vw] max-w-[20rem] shrink-0 snap-center md:w-auto md:max-w-none"
+            className="w-[78vw] max-w-[22rem] shrink-0 snap-start md:w-auto md:max-w-none"
           >
             <ProductCard product={product} compact />
           </div>

@@ -42,7 +42,7 @@ export function CollectionPage() {
     return (
       <div className="section-pad mx-auto max-w-3xl py-32 text-center md:py-40">
         <h1 className="font-display text-3xl text-ink md:text-4xl">Collection not found</h1>
-        <Link to="/shop" className="mt-6 inline-block text-brand-red">
+        <Link to="/" className="mt-6 inline-block text-brand-red">
           Back to home
         </Link>
       </div>
@@ -58,7 +58,7 @@ export function CollectionPage() {
     <div className="bg-paper pb-16 md:pb-24">
       <section className="section-pad mx-auto max-w-7xl pt-24 md:pt-32">
         <Link
-          to="/shop"
+          to="/"
           className="font-display text-[10px] tracking-[0.22em] uppercase text-muted transition hover:text-ink md:text-xs"
         >
           ← Home

@@ -1,25 +1,7 @@
-import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { subscribeNewsletter } from '../api/commerce'
+import { NewsletterSignup } from './NewsletterSignup'
 
 export function Footer() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'ok' | 'error'>('idle')
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    if (!email.trim() || status === 'submitting') return
-    const value = email.trim()
-    setStatus('submitting')
-    try {
-      await subscribeNewsletter(value)
-      setEmail('')
-      setStatus('ok')
-    } catch {
-      setStatus('error')
-    }
-  }
-
   return (
     <footer>
       <section className="relative overflow-hidden bg-leaf-deep">
@@ -44,39 +26,12 @@ export function Footer() {
               Drop announcements and new Commonwealth lines — straight from the source.
             </p>
 
-            <form
-              onSubmit={onSubmit}
+            <NewsletterSignup
+              id="footer-newsletter-email"
               className="mt-6 flex max-w-lg flex-col gap-3 sm:flex-row sm:items-stretch md:mt-8"
-            >
-              <label className="sr-only" htmlFor="newsletter-email">
-                Email
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value)
-                  if (status === 'error') setStatus('idle')
-                }}
-                placeholder="your@email.com"
-                className="flex-1 rounded-full border border-white/25 bg-white px-5 py-3.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30"
-              />
-              <button
-                type="submit"
-                disabled={status === 'submitting'}
-                className="rounded-full bg-brand-red px-7 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white shadow-[0_10px_28px_rgba(217,18,18,0.28)] transition hover:bg-brand-red-deep disabled:opacity-70"
-              >
-                {status === 'submitting' ? 'Saving...' : 'Subscribe'}
-              </button>
-            </form>
-            {status === 'ok' && (
-              <p className="mt-3 text-sm text-gold">You&apos;re on the list. Welcome to the flock.</p>
-            )}
-            {status === 'error' && (
-              <p className="mt-3 text-sm text-white/90">Something went wrong. Please try again.</p>
-            )}
+              inputClassName="flex-1 rounded-full border border-white/25 bg-white px-5 py-3.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30"
+              buttonClassName="rounded-full bg-brand-red px-7 py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white shadow-[0_10px_28px_rgba(217,18,18,0.28)] transition hover:bg-brand-red-deep disabled:opacity-70"
+            />
           </div>
 
           <div className="relative order-1 mx-auto w-full max-w-[13rem] animate-fade sm:max-w-[16rem] md:order-2 md:max-w-none md:justify-self-end">
@@ -93,24 +48,69 @@ export function Footer() {
 
       <section className="border-t border-brand-blue-line bg-paper">
         <div className="section-pad mx-auto max-w-7xl py-10 md:py-16">
-          <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-20">
-            <Link to="/shop" className="inline-block w-fit">
+          <div className="grid min-w-0 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-20">
+            <Link to="/" className="inline-block w-fit max-w-full">
               <img
                 src="/images/logo-gold.png"
                 alt="Common Wealth Seed Co"
-                className="h-16 w-auto md:h-28"
+                className="h-16 w-auto max-w-full md:h-28"
               />
             </Link>
 
-            <div className="grid grid-cols-2 gap-10 sm:min-w-[18rem]">
-              <div>
+            <div className="grid min-w-0 grid-cols-2 gap-6 sm:gap-10">
+              <div className="min-w-0">
                 <h3 className="mb-4 font-display text-xs tracking-[0.22em] uppercase text-brand-blue">
                   Quick Links
                 </h3>
                 <ul className="space-y-3 text-sm text-ink/80">
                   <li>
-                    <Link to="/shop" className="transition hover:text-brand-red">
+                    <Link to="/" className="transition hover:text-brand-red">
                       Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/shop" className="transition hover:text-brand-red">
+                      Shop
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/about" className="transition hover:text-brand-red">
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/faq" className="transition hover:text-brand-red">
+                      FAQ
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/events" className="transition hover:text-brand-red">
+                      Events
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/wholesale" className="transition hover:text-brand-red">
+                      Wholesale
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/account" className="transition hover:text-brand-red">
+                      Account
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/account/orders" className="transition hover:text-brand-red">
+                      Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/account/addresses" className="transition hover:text-brand-red">
+                      Addresses
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/account/wishlist" className="transition hover:text-brand-red">
+                      Wishlist
                     </Link>
                   </li>
                   <li>
@@ -136,16 +136,16 @@ export function Footer() {
                   </li>
                 </ul>
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 className="mb-4 font-display text-xs tracking-[0.22em] uppercase text-brand-blue">
                   Contact
                 </h3>
-                <ul className="space-y-3 text-sm text-ink/80">
+                <ul className="space-y-3 break-words text-sm text-ink/80">
                   <li>Oregon, USA</li>
                   <li>
                     <a
                       href="mailto:hello@commonwealthseed.co"
-                      className="transition hover:text-brand-red"
+                      className="break-all transition hover:text-brand-red"
                     >
                       hello@commonwealthseed.co
                     </a>
@@ -156,8 +156,26 @@ export function Footer() {
           </div>
 
           <div className="mt-12 flex flex-col gap-4 border-t border-brand-blue-line pt-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Commonwealth Seed Co. All rights reserved.</p>
-            <p>21+ only. Commonwealth genetics exclusively.</p>
+            <p className="min-w-0">
+              © {new Date().getFullYear()} Commonwealth Seed Co. All rights reserved.
+            </p>
+            <nav
+              aria-label="Legal"
+              className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 sm:justify-end"
+            >
+              <Link to="/terms" className="transition hover:text-brand-red">
+                Terms
+              </Link>
+              <Link to="/privacy" className="transition hover:text-brand-red">
+                Privacy
+              </Link>
+              <Link to="/shipping-policy" className="transition hover:text-brand-red">
+                Shipping Policy
+              </Link>
+              <Link to="/age-policy" className="transition hover:text-brand-red">
+                Age Policy
+              </Link>
+            </nav>
           </div>
         </div>
       </section>

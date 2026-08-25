@@ -130,11 +130,15 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: clip;
+  max-width: 100%;
   font-family: var(--font-body);
   color: var(--color-ink);
   background:
@@ -194,10 +198,39 @@ img {
   padding-inline: clamp(1.25rem, 4vw, 4rem);
 }
 
+/* Custom class — Tailwind `md:section-pad` does not work */
+@media (min-width: 768px) {
+  .section-pad-md {
+    padding-inline: clamp(1.25rem, 4vw, 4rem);
+  }
+}
+
 .product-carousel {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  scroll-padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+/* Margin (not padding) so snap cannot scroll the inset away */
+.product-carousel [data-carousel-card]:first-of-type {
+  margin-left: clamp(1.25rem, 4vw, 4rem);
+}
+
+.product-carousel [data-carousel-card]:last-of-type {
+  margin-right: clamp(1.25rem, 4vw, 4rem);
+}
+
+@media (min-width: 768px) {
+  .product-carousel {
+    scroll-padding-inline: 0;
+  }
+
+  .product-carousel [data-carousel-card]:first-of-type,
+  .product-carousel [data-carousel-card]:last-of-type {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .product-carousel::-webkit-scrollbar {

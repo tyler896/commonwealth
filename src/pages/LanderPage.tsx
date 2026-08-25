@@ -1,43 +1,12 @@
 import { useState, type FormEvent } from 'react'
-import { subscribeNewsletter } from '../api/commerce'
+import { NewsletterSignup } from '../components/NewsletterSignup'
 import { PREVIEW_PASSWORD, unlockPreview } from '../config'
 import './LanderPage.css'
 
-/** Optional Make scenario — kept alongside commerce newsletter so existing alerts still fire. */
-const WEBHOOK_URL = 'https://hook.us2.make.com/owttttrlhd2b8aj898d5gf9qaha59xe1'
-
-async function notifyMake(email: string) {
-  try {
-    const formData = new FormData()
-    formData.append('email', email)
-    await fetch(WEBHOOK_URL, { method: 'POST', body: formData })
-  } catch {
-    // Make is best-effort; commerce admin is the source of truth
-  }
-}
-
 export function LanderPage() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'ok' | 'error'>('idle')
   const [showPreview, setShowPreview] = useState(false)
   const [password, setPassword] = useState('')
   const [previewError, setPreviewError] = useState(false)
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    if (!email.trim() || status === 'submitting') return
-
-    const value = email.trim()
-    setStatus('submitting')
-    try {
-      await subscribeNewsletter(value)
-      void notifyMake(value)
-      setEmail('')
-      setStatus('ok')
-    } catch {
-      setStatus('error')
-    }
-  }
 
   const onPreviewSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -59,30 +28,13 @@ export function LanderPage() {
 
         <div className="cw-lander__signup">
           <div className="cw-lander__signup-label">Sign up for drop alerts.</div>
-
-          {status === 'ok' ? (
-            <div className="cw-lander__success">Thanks! You’re on the list.</div>
-          ) : (
-            <form className="cw-lander__form" onSubmit={onSubmit}>
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value)
-                  if (status === 'error') setStatus('idle')
-                }}
-              />
-              <button type="submit" disabled={status === 'submitting'}>
-                {status === 'submitting' ? 'Submitting...' : 'Notify Me'}
-              </button>
-              {status === 'error' && (
-                <p className="cw-lander__error">Something went wrong. Please try again.</p>
-              )}
-            </form>
-          )}
+          <NewsletterSignup
+            id="lander-newsletter-email"
+            className="cw-lander__form"
+            buttonLabel="Notify Me"
+            successClassName="cw-lander__success"
+            errorClassName="cw-lander__error"
+          />
         </div>
 
         <div className="cw-lander__footer">
@@ -119,12 +71,6 @@ export function LanderPage() {
           </form>
         )}
       </section>
-
-      <img
-        className="cw-lander__side"
-        src="/lander/CWsocials-01.png"
-        alt=""
-      />
     </main>
   )
 }

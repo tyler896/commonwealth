@@ -1,13 +1,16 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useCart } from '../cart/CartContext'
+import { useWholesaleMinimum } from '../auth/useWholesaleMinimum'
 
 export function CheckoutPage() {
   const { lines, subtotal, clearCart, count } = useCart()
+  const { isB2B, tierLabel, minimum, meetsMinimum, remaining } = useWholesaleMinimum()
   const [done, setDone] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
+  const canCheckout = meetsMinimum(subtotal)
 
   if (count === 0 && !done) {
     return <Navigate to="/shop" replace />
@@ -15,6 +18,7 @@ export function CheckoutPage() {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
+    if (!canCheckout) return
     clearCart()
     setDone(true)
   }
@@ -41,6 +45,13 @@ export function CheckoutPage() {
     <div className="section-pad mx-auto max-w-5xl pb-24 pt-28 md:pt-36">
       <h1 className="font-blackletter text-4xl text-leaf md:text-5xl">Checkout</h1>
       <p className="mt-2 text-sm text-muted">Commonwealth Seed Co · Wild Thornberry Line only</p>
+
+      {isB2B && minimum > 0 && !canCheckout && (
+        <p className="mt-6 rounded-2xl border border-brand-red/30 bg-brand-red/5 px-5 py-4 text-sm text-brand-red">
+          {tierLabel} accounts require a ${minimum} minimum. Add ${remaining(subtotal)} more to
+          place this order.
+        </p>
+      )}
 
       <div className="mt-12 grid gap-12 lg:grid-cols-2">
         <form onSubmit={onSubmit} className="space-y-5">
@@ -91,7 +102,8 @@ export function CheckoutPage() {
           </p>
           <button
             type="submit"
-            className="w-full rounded-full bg-leaf py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-leaf-deep"
+            disabled={!canCheckout}
+            className="w-full rounded-full bg-leaf py-3.5 font-display text-xs tracking-[0.2em] uppercase text-white transition hover:bg-leaf-deep disabled:cursor-not-allowed disabled:bg-ink/20 disabled:text-ink/50"
           >
             Place order · ${subtotal}
           </button>
@@ -118,6 +130,11 @@ export function CheckoutPage() {
             <span className="text-muted">Subtotal</span>
             <span className="font-display text-xl text-leaf">${subtotal}</span>
           </div>
+          {isB2B && minimum > 0 && (
+            <p className="mt-3 text-sm text-muted">
+              {tierLabel} minimum: ${minimum}
+            </p>
+          )}
         </div>
       </div>
     </div>

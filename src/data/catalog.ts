@@ -1,7 +1,25 @@
 import type { Product } from './products'
 
+type StaticProductInput = Omit<Product, 'brand' | 'attributes'> &
+  Partial<Pick<Product, 'brand' | 'attributes'>>
+
+function enrichStaticProduct(p: StaticProductInput): Product {
+  const brand = p.brand ?? 'Commonwealth Seed Co'
+  const lineLabel = p.line === 'grape-sunshine' ? 'Grape Sunshine' : 'Wild Thornberry'
+  return {
+    ...p,
+    brand,
+    attributes: p.attributes ?? [
+      { key: 'lineage', label: 'Lineage', value: p.lineage },
+      { key: 'line', label: 'Line', value: lineLabel },
+      { key: 'pack', label: 'Pack', value: `${p.packSize} feminized` },
+      { key: 'brand', label: 'Brand', value: brand },
+    ],
+  }
+}
+
 /** Built-in catalog — shop works without a hosted commerce API. */
-export const staticCatalog: Product[] = [
+const staticCatalogRaw: StaticProductInput[] = [
   {
     "id": "bramble-jam",
     "catalogId": "bramble-jam",
@@ -380,3 +398,5 @@ export const staticCatalog: Product[] = [
     "purchasable": false
   }
 ]
+
+export const staticCatalog: Product[] = staticCatalogRaw.map(enrichStaticProduct)

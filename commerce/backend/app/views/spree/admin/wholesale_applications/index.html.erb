@@ -1,0 +1,103 @@
+<%#
+  Wholesale applications index — pending + approved accounts.
+%>
+<% content_for :page_title do %>
+  Wholesale Customers
+<% end %>
+
+<% content_for :page_actions do %>
+  <span class="text-sm text-zinc-500">
+    Approve applicants into Wholesale or Distro tiers. Edit tier prices under Products → Price Lists.
+  </span>
+<% end %>
+
+<div class="card mb-6">
+  <div class="card-header">
+    <h5 class="card-title mb-0">Minimum order by tier</h5>
+  </div>
+  <div class="card-body">
+    <p class="text-sm text-zinc-600 mb-4">
+      Trade accounts in each tier must reach this cart subtotal before checkout.
+    </p>
+    <%= form_with url: spree.update_all_admin_wholesale_tier_settings_path, method: :put, local: true do %>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <% @tier_settings.each_with_index do |setting, index| %>
+          <%= hidden_field_tag "settings[#{index}][id]", setting.id %>
+          <div>
+            <label class="block text-xs uppercase tracking-wide text-zinc-500 mb-1">
+              <%= setting.tier_label %> — minimum order ($)
+            </label>
+            <%= number_field_tag "settings[#{index}][minimum_order_amount]",
+                  setting.minimum_order_amount,
+                  step: '0.01',
+                  min: 0,
+                  class: 'form-control',
+                  required: true %>
+          </div>
+        <% end %>
+      </div>
+      <div class="mt-4">
+        <%= button_tag 'Save minimums', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card mb-6">
+  <div class="card-header flex items-center justify-between gap-4">
+    <h5 class="card-title mb-0">Applications</h5>
+    <%= form_with url: spree.admin_wholesale_applications_path, method: :get, local: true, class: 'flex gap-2 items-center' do %>
+      <%= select_tag 'q[status_eq]',
+            options_for_select(
+              [['All statuses', '']] + Spree::WholesaleApplication::STATUSES.map { |s| [s.titleize, s] },
+              params.dig(:q, :status_eq)
+            ),
+            class: 'form-control form-control-sm' %>
+      <%= text_field_tag 'q[company_name_or_email_or_contact_name_cont]',
+            params.dig(:q, :company_name_or_email_or_contact_name_cont),
+            placeholder: 'Search company / email',
+            class: 'form-control form-control-sm' %>
+      <%= button_tag 'Filter', class: 'btn btn-sm btn-primary' %>
+    <% end %>
+  </div>
+  <div class="card-body p-0 overflow-x-auto">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Tier</th>
+          <th>Submitted</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @wholesale_applications.any? %>
+          <% @wholesale_applications.each do |app| %>
+            <tr>
+              <td class="font-medium"><%= app.company_name %></td>
+              <td><%= app.contact_name %></td>
+              <td><%= app.email %></td>
+              <td>
+                <span class="badge <%= app.pending? ? 'badge-warning' : app.approved? ? 'badge-success' : 'badge-secondary' %>">
+                  <%= app.status.titleize %>
+                </span>
+              </td>
+              <td><%= app.tier_label || '—' %></td>
+              <td class="text-sm text-zinc-500"><%= l(app.created_at, format: :short) rescue app.created_at.to_fs(:short) %></td>
+              <td class="text-right">
+                <%= link_to 'Manage', spree.edit_admin_wholesale_application_path(app), class: 'btn btn-sm btn-light' %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="7" class="text-center text-zinc-500 py-10">No wholesale applications yet.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

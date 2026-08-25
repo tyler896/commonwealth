@@ -13,8 +13,32 @@ Rails.application.routes.draw do
       path: :admin_user,
       router_name: :spree
     )
-  end
-  # This line mounts Spree's routes at the root of your application.
+
+    namespace :admin do
+      resources :events
+      resources :wholesale_applications, only: %i[index edit update] do
+        member do
+          put :approve
+          put :reject
+          put :revoke
+          put :change_tier
+        end
+      end
+      resource :wholesale_tier_settings, only: [] do
+        put :update_all
+      end
+    end
+
+    namespace :api, defaults: { format: 'json' } do
+      namespace :v3 do
+        namespace :store do
+          resources :events, only: %i[index show]
+          resources :wholesale_applications, only: %i[create]
+          resources :wholesale_tiers, only: %i[index]
+        end
+      end
+    end
+  end  # This line mounts Spree's routes at the root of your application.
   # This means, any requests to URLs such as /products, will go to
   # Spree::ProductsController.
   # If you would like to change where this engine is mounted, simply change the

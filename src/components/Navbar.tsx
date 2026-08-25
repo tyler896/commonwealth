@@ -1,14 +1,21 @@
-import { Link, NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useCart } from '../cart/CartContext'
+import { useAuth } from '../auth/AuthContext'
 import { collections } from '../data/products'
 
 const links = [
-  { to: '/shop', label: 'Home', accent: 'ink' as const },
+  { to: '/', label: 'Home', accent: 'ink' as const, end: true },
+  { to: '/shop', label: 'Shop', accent: 'ink' as const, end: true },
+  { to: '/about', label: 'About', accent: 'ink' as const, end: true },
+  { to: '/faq', label: 'FAQ', accent: 'ink' as const, end: true },
+  { to: '/events', label: 'Events', accent: 'ink' as const, end: true },
+  { to: '/wholesale', label: 'Wholesale', accent: 'ink' as const, end: true },
   ...collections.map((c) => ({
     to: `/collections/${c.slug}`,
     label: c.id === 'wild-thornberry' ? 'Wild Thornberry' : 'Grape Sunshine',
-    accent: c.accent === 'red' ? ('red' as const) : ('purple' as const),
+    accent: (c.accent === 'red' ? 'red' : 'purple') as 'red' | 'purple',
+    end: false,
   })),
 ]
 
@@ -35,6 +42,10 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { count, openCart } = useCart()
+  const { user, tierLabel, logout } = useAuth()
+  const { pathname } = useLocation()
+  const accountTo = user ? '/account' : '/account/login'
+  const accountLabel = tierLabel || 'Account'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -50,16 +61,36 @@ export function Navbar() {
     }
   }, [open])
 
+  const linkClass = (to: string, accent: 'ink' | 'red' | 'purple', isActive: boolean) => {
+    const active =
+      accent === 'red' ? 'text-brand-red' : accent === 'purple' ? 'text-raven' : 'text-ink'
+    // Force exact match for Home — RR can treat "/" as a prefix of every path.
+    const on =
+      to === '/' ? pathname === '/' || pathname === '' : isActive
+    return `font-display text-xs tracking-[0.16em] uppercase transition-colors lg:text-sm lg:tracking-[0.18em] ${
+      on ? active : 'text-ink/65 hover:text-ink'
+    }`
+  }
+
+  const mobileLinkClass = (to: string, accent: 'ink' | 'red' | 'purple', isActive: boolean) => {
+    const active =
+      accent === 'red' ? 'text-brand-red' : accent === 'purple' ? 'text-raven' : 'text-ink'
+    const on = to === '/' ? pathname === '/' || pathname === '' : isActive
+    return `border-b border-line py-4 font-display text-2xl tracking-tight transition ${
+      on ? active : 'text-ink'
+    }`
+  }
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b border-line pt-[env(safe-area-inset-top)] transition-all duration-300 ${
         scrolled || open ? 'bg-paper/95 backdrop-blur-md' : 'bg-paper'
       }`}
     >
-      <div className="section-pad mx-auto flex h-14 max-w-7xl items-center justify-between md:h-20">
+      <div className="section-pad mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 md:h-20">
         <Link
-          to="/shop"
-          className="relative z-10 flex min-w-0 items-center gap-3"
+          to="/"
+          className="relative z-10 flex min-w-0 shrink-0 items-center gap-3"
           onClick={() => setOpen(false)}
         >
           <img
@@ -70,59 +101,61 @@ export function Navbar() {
           <span className="sr-only">Commonwealth Seed Co</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:gap-8 md:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-4 overflow-x-auto lg:gap-6 md:flex">
           {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              end={link.to === '/shop'}
-              className={({ isActive }) => {
-                const active =
-                  link.accent === 'red'
-                    ? 'text-brand-red'
-                    : link.accent === 'purple'
-                      ? 'text-raven'
-                      : 'text-ink'
-                return `font-display text-xs tracking-[0.16em] uppercase transition-colors lg:text-sm lg:tracking-[0.18em] ${
-                  isActive ? active : 'text-ink/65 hover:text-ink'
-                }`
-              }}
+              end={link.end}
+              className={({ isActive }) =>
+                `shrink-0 ${linkClass(link.to, link.accent, isActive)}`
+              }
             >
               {link.label}
             </NavLink>
           ))}
-          <button
-            type="button"
-            onClick={openCart}
-            aria-label={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
-            className="relative flex items-center justify-center rounded-full bg-brand-red px-4 py-2 text-white transition hover:bg-brand-red-deep"
-          >
-            <CartIcon className="h-4 w-4" />
-            {count > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-white">
-                {count}
-              </span>
-            )}
-          </button>
         </nav>
 
-        <div className="relative z-10 flex items-center gap-2 md:hidden">
+        <div className="relative z-10 flex shrink-0 items-center gap-2 sm:gap-3">
+          <Link
+            to={accountTo}
+            onClick={() => setOpen(false)}
+            className={`font-display text-[10px] tracking-[0.14em] uppercase transition sm:text-xs sm:tracking-[0.16em] ${
+              pathname.startsWith('/account')
+                ? 'text-ink'
+                : 'text-ink/70 hover:text-ink'
+            }`}
+          >
+            {accountLabel}
+          </Link>
+          {user && (
+            <button
+              type="button"
+              onClick={() => {
+                logout()
+                setOpen(false)
+              }}
+              className="hidden font-display text-[10px] tracking-[0.14em] uppercase text-ink/45 transition hover:text-ink sm:inline sm:text-xs sm:tracking-[0.16em]"
+            >
+              Sign out
+            </button>
+          )}
           <button
             type="button"
             onClick={openCart}
             aria-label={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
-            className="relative flex items-center justify-center rounded-full bg-brand-red px-3 py-1.5 text-white"
+            className="relative flex items-center justify-center rounded-full bg-brand-red px-3 py-1.5 text-white transition hover:bg-brand-red-deep md:px-4 md:py-2"
           >
-            <CartIcon className="h-3.5 w-3.5" />
+            <CartIcon className="h-3.5 w-3.5 md:h-4 md:w-4" />
             {count > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[9px] font-bold text-white">
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[9px] font-bold text-white md:-right-2 md:-top-2 md:h-5 md:min-w-5 md:text-[10px]">
                 {count}
               </span>
             )}
           </button>
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center"
+            className="flex h-10 w-10 items-center justify-center md:hidden"
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -147,23 +180,32 @@ export function Navbar() {
               <NavLink
                 key={link.to}
                 to={link.to}
-                end={link.to === '/shop'}
+                end={link.end}
                 onClick={() => setOpen(false)}
-                className={({ isActive }) => {
-                  const active =
-                    link.accent === 'red'
-                      ? 'text-brand-red'
-                      : link.accent === 'purple'
-                        ? 'text-raven'
-                        : 'text-ink'
-                  return `border-b border-line py-4 font-display text-2xl tracking-tight transition ${
-                    isActive ? active : 'text-ink'
-                  }`
-                }}
+                className={({ isActive }) => mobileLinkClass(link.to, link.accent, isActive)}
               >
                 {link.label}
               </NavLink>
             ))}
+            <NavLink
+              to={accountTo}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => mobileLinkClass('/account', 'ink', isActive)}
+            >
+              {accountLabel}
+            </NavLink>
+            {user && (
+              <button
+                type="button"
+                onClick={() => {
+                  logout()
+                  setOpen(false)
+                }}
+                className="border-b border-line py-4 text-left font-display text-2xl tracking-tight text-ink/60"
+              >
+                Sign out
+              </button>
+            )}
           </nav>
         </div>
       )}

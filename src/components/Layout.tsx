@@ -14,10 +14,10 @@ function ScrollToTop() {
 
 export function Layout() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen min-w-0 flex-col overflow-x-hidden">
       <ScrollToTop />
       <Navbar />
-      <main className="flex-1">
+      <main className="min-w-0 flex-1 overflow-x-hidden">
         <Outlet />
       </main>
       <Footer />

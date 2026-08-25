@@ -302,6 +302,15 @@ def upsert_products(products, line_name, line_key)
     }
     product.save!
 
+    # Structured custom fields (Settings → Metafields) — preferred over metadata for admin UI / Google
+    if product.respond_to?(:set_metafield)
+      product.set_metafield('properties.lineage', attrs[:lineage])
+      product.set_metafield('properties.line', line_name)
+      product.set_metafield('properties.pack', '3-pack feminized')
+      product.set_metafield('properties.brand', 'Commonwealth Seed Co')
+      product.save!
+    end
+
     product.master.update!(sku: attrs[:sku])
     product.channels = [channel] if channel
 
