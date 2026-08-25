@@ -79,6 +79,28 @@ If `git pull` fails because of local server-only files, stop and reconcile — d
 
 ---
 
+## Newsletter → admin (storefront rebuild)
+
+Lander / footer signups post to Spree `POST /api/v3/store/newsletter_subscribers`.
+
+On the live host, bake the publishable key and rebuild:
+
+```bash
+ssh deploy@24.144.82.195
+cd /home/deploy/commonwealth
+bash deploy/bootstrap-newsletter.sh
+```
+
+Import prior Make (or other) signups — one email per line, or CSV with an `email` column:
+
+```bash
+bash deploy/bootstrap-newsletter.sh /home/deploy/emails.txt
+```
+
+Subscribers appear in Spree admin under newsletter subscribers.
+
+---
+
 ## A) Deploy storefront changes (most common)
 
 Anything under `src/`, `public/`, `index.html`, `package.json`, Vite config, or root `Dockerfile` / `docker-compose.prod.yml`.
