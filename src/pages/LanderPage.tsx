@@ -1,8 +1,20 @@
 import { useState, type FormEvent } from 'react'
+import { subscribeNewsletter } from '../api/commerce'
 import { PREVIEW_PASSWORD, unlockPreview } from '../config'
 import './LanderPage.css'
 
+/** Optional Make scenario — kept alongside commerce newsletter so existing alerts still fire. */
 const WEBHOOK_URL = 'https://hook.us2.make.com/owttttrlhd2b8aj898d5gf9qaha59xe1'
+
+async function notifyMake(email: string) {
+  try {
+    const formData = new FormData()
+    formData.append('email', email)
+    await fetch(WEBHOOK_URL, { method: 'POST', body: formData })
+  } catch {
+    // Make is best-effort; commerce admin is the source of truth
+  }
+}
 
 export function LanderPage() {
   const [email, setEmail] = useState('')
@@ -15,18 +27,11 @@ export function LanderPage() {
     e.preventDefault()
     if (!email.trim() || status === 'submitting') return
 
+    const value = email.trim()
     setStatus('submitting')
     try {
-      const formData = new FormData()
-      formData.append('email', email.trim())
-
-      const response = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) throw new Error('Submission failed')
-
+      await subscribeNewsletter(value)
+      void notifyMake(value)
       setEmail('')
       setStatus('ok')
     } catch {
@@ -118,7 +123,7 @@ export function LanderPage() {
       <img
         className="cw-lander__side"
         src="/lander/CWsocials-01.png"
-        alt="Commonwealth Seeds Co garden visual"
+        alt=""
       />
     </main>
   )

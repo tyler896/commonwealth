@@ -76,7 +76,11 @@ Vite env is **baked at image build time** via build-args:
 |-----------|---------|
 | `VITE_STOREFRONT_UNLOCKED` | `true` = full shop; `false`/unset = lander only |
 | `VITE_COMMERCE_API_URL` | Leave empty for same-origin `/api` |
-| `VITE_COMMERCE_PUBLISHABLE_KEY` | Spree publishable key from admin |
+| `VITE_COMMERCE_PUBLISHABLE_KEY` | Spree publishable key from admin — **required** for lander newsletter → admin |
+
+Get the live publishable key from Spree admin → Developers / API keys (or ask Frederik). Do not invent one.
+
+Lander / footer “Notify Me” posts to `POST /api/v3/store/newsletter_subscribers` (same-origin `/api`). Subscribers appear in Spree admin under newsletter subscribers. Rebuild the storefront image whenever this key changes.
 
 ### Rebuild & restart (lander mode — current default)
 
@@ -84,7 +88,14 @@ Vite env is **baked at image build time** via build-args:
 cd /home/deploy/commonwealth
 git pull --ff-only origin main
 
-docker compose -f docker-compose.prod.yml build --no-cache web
+# Read key from server commerce env without printing it into shell history if you prefer:
+#   PK=$(grep '^SPREE_STOREFRONT_KEY\|^PUBLISHABLE' commerce/.env | head -1 | cut -d= -f2-)
+# Or paste the pk_… from Spree admin:
+docker compose -f docker-compose.prod.yml build --no-cache \
+  --build-arg VITE_COMMERCE_API_URL= \
+  --build-arg VITE_COMMERCE_PUBLISHABLE_KEY='pk_REPLACE_WITH_LIVE_KEY' \
+  web
+
 docker compose -f docker-compose.prod.yml up -d web
 docker compose -f docker-compose.prod.yml ps
 curl -sI http://127.0.0.1:3023/ | head -5
@@ -104,8 +115,6 @@ docker compose -f docker-compose.prod.yml build --no-cache \
 
 docker compose -f docker-compose.prod.yml up -d web
 ```
-
-Get the live publishable key from Spree admin → Developers / API keys (or ask Frederik). Do not invent one.
 
 ### Smoke-check
 

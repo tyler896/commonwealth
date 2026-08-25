@@ -61,3 +61,25 @@ export async function fetchProductBySlug(slug: string): Promise<Product | null> 
     return fromStatic ? withOverrides([fromStatic])[0] : null
   }
 }
+
+/** Drop-alert / newsletter signup → commerce admin newsletter subscribers. */
+export async function subscribeNewsletter(email: string): Promise<void> {
+  if (!publishableKey) {
+    throw new Error('Missing store API key')
+  }
+
+  const res = await fetch(apiUrl('/api/v3/store/newsletter_subscribers'), {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-Spree-Api-Key': publishableKey,
+    },
+    body: JSON.stringify({ email: email.trim() }),
+  })
+
+  // 200/201 = created or already subscribed
+  if (!res.ok) {
+    throw new Error(`Newsletter signup failed (${res.status})`)
+  }
+}
