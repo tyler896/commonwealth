@@ -89,23 +89,7 @@ export function AgeGate() {
           You must be of legal age to enter this site. By continuing, you confirm you are 21+.
         </p>
 
-        <label className="mt-6 inline-flex cursor-pointer items-center gap-2.5 text-sm text-ink/80">
-          <input
-            type="checkbox"
-            checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
-            className="h-4 w-4 accent-[var(--color-brand-red,#d91212)]"
-          />
-          Remember me for 365 days
-        </label>
-
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <button
-            type="submit"
-            className="inline-flex justify-center rounded-full bg-brand-red px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-brand-red-deep"
-          >
-            Yes, I am 21+
-          </button>
+        <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center">
           <button
             type="button"
             onClick={onNo}
@@ -113,7 +97,23 @@ export function AgeGate() {
           >
             No
           </button>
+          <button
+            type="submit"
+            className="inline-flex justify-center rounded-full bg-leaf px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-leaf-deep"
+          >
+            Yes, I am 21+
+          </button>
         </div>
+
+        <label className="mt-6 inline-flex cursor-pointer items-center gap-2.5 text-sm text-ink/80">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="h-4 w-4 accent-[var(--color-leaf,#288848)]"
+          />
+          Remember me
+        </label>
       </form>
     </div>
   )
