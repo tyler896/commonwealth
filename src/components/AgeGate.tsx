@@ -93,7 +93,7 @@ export function AgeGate() {
           <button
             type="button"
             onClick={onNo}
-            className="inline-flex justify-center rounded-full border border-line px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-ink transition hover:border-ink/40"
+            className="inline-flex justify-center rounded-full bg-ink px-7 py-3.5 font-display text-[10px] tracking-[0.2em] uppercase text-white transition hover:bg-ink/85"
           >
             No
           </button>
