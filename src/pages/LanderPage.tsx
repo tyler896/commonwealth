@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { NewsletterSignup } from '../components/NewsletterSignup'
 import { PREVIEW_PASSWORD, unlockPreview } from '../config'
+import { AgeGate } from '../components/AgeGate'
 import './LanderPage.css'
 
 export function LanderPage() {
@@ -19,6 +20,7 @@ export function LanderPage() {
 
   return (
     <main className="cw-lander">
+      <AgeGate />
       <section className="cw-lander__content">
         <img
           className="cw-lander__logo"
